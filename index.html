@@ -140,10 +140,6 @@
         background: #374151;
         color: white;
       }
-      .btn-ai {
-        background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
-        color: white;
-      }
       .form-group {
         margin-bottom: 14px;
         text-align: right;
@@ -356,15 +352,15 @@
             <span class="badge">AI STUDIO</span>
           </div>
         </div>
-        <div class="subtitle">استوديو الذكاء الاصطناعي</div>
+        <div class="subtitle">استوديو صانع الفيديوهات</div>
       </header>
 
       <div class="content-body">
         
         <!-- بطاقة المشروع الرئيسية -->
         <div class="card-box">
-          <h3>✨ مولد الفيديوهات بالذكاء الاصطناعي</h3>
-          <p>ارفع ملف الصوت والصورة، وحدد اسم القارئ، ودع الذكاء الاصطناعي يكتب النص تلقائياً.</p>
+          <h3>✨ صانع الفيديوهات القرآنية</h3>
+          <p>اكتب الآيات، ارفع صورتك وصوتك، وسترى الكاريوكي يتزامن مع الصوت وشريط الوقت تماماً.</p>
           <button class="btn-action btn-primary" id="exportBtn" type="button">📥 تصدير وتحميل الفيديو</button>
         </div>
 
@@ -384,7 +380,7 @@
         <!-- مكان اسم القارئ -->
         <div class="card-box">
           <div class="form-group" style="margin-bottom: 0;">
-            <label>👤 اسم القارئ (يظهر أعلى الفيديو):</label>
+            <label>👤 اسم القارئ:</label>
             <input type="text" id="sheikhNameInput" value="القارئ: يوسف خربوش" placeholder="اكتب اسم القارئ هنا...">
           </div>
         </div>
@@ -395,250 +391,4 @@
           <div class="options-row">
             <button class="option-btn active" id="dim916" type="button">9:16 (عمودي)</button>
             <button class="option-btn" id="dim169" type="button">16:9 (أفقي)</button>
-            <button class="option-btn" id="dim11" type="button">1:1 (مربع)</button>
-          </div>
-
-          <div class="preview-wrapper">
-            <div class="preview-screen" id="previewScreen">
-              <div class="preview-bg" id="previewBgLayer"></div>
-              <div class="preview-overlay"></div>
-              <div class="preview-text">
-                <div class="preview-sheikh-badge" id="dispSheikhBadge">القارئ: يوسف خربوش</div>
-                <!-- كاريوكي الكلمات المتزامنة تلقائياً -->
-                <div class="karaoke-box" id="karaokeContainer">
-                  <span style="color: var(--text-muted); font-size: 12px;">(اضغط توليد بالذكاء الاصطناعي بعد رفع الصوت)</span>
-                </div>
-              </div>
-              <div class="play-btn-circle" id="playBtn">▶</div>
-            </div>
-
-            <!-- الشريط السفلي تحت الفيديو مباشرة -->
-            <div class="video-player-bar">
-              <input type="range" class="seek-slider" id="videoSeekSlider" value="0" min="0" max="100" step="1">
-              <div class="bar-controls-row">
-                <span class="time-display" id="timeCurrent">0:00</span>
-                <span class="time-display" id="timeTotal">0:00</span>
-              </div>
-            </div>
-          </div>
-
-          <div id="statusText" class="status-msg"></div>
-        </div>
-
-        <!-- توليد النص بالذكاء الاصطناعي -->
-        <div class="card-box">
-          <div class="form-group">
-            <label>النص القرآني (يتم كتابته تلقائياً بالذكاء الاصطناعي):</label>
-            <textarea id="ayahInput" rows="2" placeholder="سيتم كتابة الآيات هنا تلقائياً..."></textarea>
-          </div>
-          <button class="btn-action btn-ai" id="aiGenerateBtn" type="button">🤖 كتابة الآيات والكاريوكي تلقائياً بالذكاء الاصطناعي</button>
-        </div>
-
-        <!-- لون تمييز الكاريوكي -->
-        <div class="card-box">
-          <label>لون تمييز الكلمات (كاريوكي):</label>
-          <div class="color-palette" id="colorPalette">
-            <div class="color-dot selected" data-color="#f59e0b" style="background: #f59e0b;"></div>
-            <div class="color-dot" data-color="#ec4899" style="background: #ec4899;"></div>
-            <div class="color-dot" data-color="#10b981" style="background: #10b981;"></div>
-            <div class="color-dot" data-color="#3b82f6" style="background: #3b82f6;"></div>
-            <div class="color-dot" data-color="#ffffff" style="background: #ffffff;"></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- عنصر الصوت -->
-    <audio id="audioPlayerElement" style="display:none;"></audio>
-
-    <script>
-      const karaokeContainer = document.getElementById('karaokeContainer');
-      let wordsElements = [];
-
-      function renderKaraoke(text) {
-        const words = text.trim().split(/\s+/);
-        karaokeContainer.innerHTML = '';
-        wordsElements = [];
-
-        words.forEach(word => {
-          const span = document.createElement('span');
-          span.className = 'karaoke-word';
-          span.innerText = word;
-          karaokeContainer.appendChild(span);
-          wordsElements.push(span);
-        });
-      }
-
-      // تحديث اسم القارئ فوراً على الفيديو
-      const sheikhNameInput = document.getElementById('sheikhNameInput');
-      const dispSheikhBadge = document.getElementById('dispSheikhBadge');
-      if(sheikhNameInput && dispSheikhBadge) {
-        sheikhNameInput.addEventListener('input', function() {
-          dispSheikhBadge.innerText = this.value;
-        });
-      }
-
-      // زر التوليد التلقائي بالذكاء الاصطناعي من الصوت المرفوع
-      const aiGenerateBtn = document.getElementById('aiGenerateBtn');
-      const ayahInput = document.getElementById('ayahInput');
-
-      if(aiGenerateBtn) {
-        aiGenerateBtn.addEventListener('click', function() {
-          const status = document.getElementById('statusText');
-          status.innerText = "🤖 جاري استماع وتحليل التلاوة بالذكاء الاصطناعي وكتابة الآيات...";
-          
-          setTimeout(() => {
-            const generatedText = "وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا وَكَانَ رَسُولًا نَّبِيًّا";
-            ayahInput.value = generatedText;
-            renderKaraoke(generatedText);
-            status.innerText = "✨ تم كتابة الآيات وتزامن الكاريوكي تلقائياً بنجاح!";
-            setTimeout(() => { status.innerText = ""; }, 3000);
-          }, 2000);
-        });
-      }
-
-      // رفع الصورة وعرضها في الخلفية (تم الإصلاح لتعمل 100%)
-      const imageUploadInput = document.getElementById('imageUploadInput');
-      const imageNameDisplay = document.getElementById('imageNameDisplay');
-      const previewBgLayer = document.getElementById('previewBgLayer');
-
-      if(imageUploadInput) {
-        imageUploadInput.addEventListener('change', function(event) {
-          const file = event.target.files[0];
-          if(file) {
-            imageNameDisplay.innerText = "✅ تم رفع الصورة: " + file.name;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              previewBgLayer.style.backgroundImage = `url('${e.target.result}')`;
-            };
-            reader.readAsDataURL(file);
-          }
-        });
-      }
-
-      // رفع ملف الصوت (تم الإصلاح ليعمل 100% مع الشريط)
-      const audioUploadInput = document.getElementById('audioUploadInput');
-      const audioNameDisplay = document.getElementById('audioNameDisplay');
-      const audioPlayerElement = document.getElementById('audioPlayerElement');
-      const videoSeekSlider = document.getElementById('videoSeekSlider');
-      const timeCurrent = document.getElementById('timeCurrent');
-      const timeTotal = document.getElementById('timeTotal');
-
-      function formatTime(seconds) {
-        const m = Math.floor(seconds / 60);
-        const s = Math.floor(seconds % 60);
-        return m + ":" + (s < 10 ? "0" : "") + s;
-      }
-
-      if(audioUploadInput) {
-        audioUploadInput.addEventListener('change', function(event) {
-          const file = event.target.files[0];
-          if(file) {
-            audioNameDisplay.innerText = "✅ تم رفع الصوت: " + file.name;
-            audioPlayerElement.src = URL.createObjectURL(file);
-            audioPlayerElement.onloadedmetadata = function() {
-              timeTotal.innerText = formatTime(audioPlayerElement.duration);
-              videoSeekSlider.max = Math.floor(audioPlayerElement.duration);
-            };
-          }
-        });
-      }
-
-      // تحديث شريط الوقت وتزامن الكاريوكي مع تقدم الصوت
-      audioPlayerElement.addEventListener('timeupdate', function() {
-        videoSeekSlider.value = Math.floor(audioPlayerElement.currentTime);
-        timeCurrent.innerText = formatTime(audioPlayerElement.currentTime);
-
-        if(audioPlayerElement.duration && wordsElements.length > 0) {
-          const progressRatio = audioPlayerElement.currentTime / audioPlayerElement.duration;
-          const activeIndex = Math.min(Math.floor(progressRatio * wordsElements.length), wordsElements.length - 1);
-          wordsElements.forEach((el, idx) => {
-            if(idx === activeIndex) el.classList.add('active');
-            else el.classList.remove('active');
-          });
-        }
-      });
-
-      // التحكم في الشريط السفلي للتقديم والتأخير
-      videoSeekSlider.addEventListener('input', function() {
-        audioPlayerElement.currentTime = this.value;
-        timeCurrent.innerText = formatTime(this.value);
-      });
-
-      // زر التشغيل والإيقاف
-      let isPlaying = false;
-      const playBtn = document.getElementById('playBtn');
-      if(playBtn) {
-        playBtn.addEventListener('click', function() {
-          isPlaying = !isPlaying;
-          const status = document.getElementById('statusText');
-
-          if(isPlaying) {
-            this.innerText = "⏸";
-            if(audioPlayerElement.src) {
-              audioPlayerElement.play().catch(e => console.log(e));
-            }
-            if(status) status.innerText = "▶ جاري تشغيل التلاوة والكاريوكي المتزامن...";
-          } else {
-            this.innerText = "▶";
-            if(audioPlayerElement.src) {
-              audioPlayerElement.pause();
-            }
-            if(status) status.innerText = "⏸ تم الإيقاف المؤقت";
-          }
-        });
-      }
-
-      // تصدير وتحميل الفيديو بملف حقيقي
-      const exportBtn = document.getElementById('exportBtn');
-      if(exportBtn) {
-        exportBtn.addEventListener('click', function() {
-          const status = document.getElementById('statusText');
-          status.innerText = "⏳ جاري رندر وتصدير الفيديو بالذكاء الاصطناعي...";
-          setTimeout(() => {
-            status.innerText = "🎉 تم تجهيز الفيديو وتنزيله بنجاح!";
-            const blob = new Blob(["Youssef Kharboush AI Video Project Exported Successfully"], { type: "text/plain" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "youssef-kharboush-ai-video.txt";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          }, 3000);
-        });
-      }
-
-      // أبعاد الشاشة
-      const screen = document.getElementById('previewScreen');
-      const btn916 = document.getElementById('dim916');
-      const btn169 = document.getElementById('dim169');
-      const btn11 = document.getElementById('dim11');
-
-      btn916.addEventListener('click', function() {
-        btn916.classList.add('active'); btn169.classList.remove('active'); btn11.classList.remove('active');
-        screen.style.height = '240px';
-      });
-      btn169.addEventListener('click', function() {
-        btn169.classList.add('active'); btn916.classList.remove('active'); btn11.classList.remove('active');
-        screen.style.height = '150px';
-      });
-      btn11.addEventListener('click', function() {
-        btn11.classList.add('active'); btn916.classList.remove('active'); btn169.classList.remove('active');
-        screen.style.height = '200px';
-      });
-
-      // ألوان الكاريوكي
-      const dots = document.querySelectorAll('.color-dot');
-      dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-          dots.forEach(d => d.classList.remove('selected'));
-          this.classList.add('selected');
-          const color = this.getAttribute('data-color');
-          document.documentElement.style.setProperty('--accent-gold', color);
-        });
-      });
-    </script>
-  </body>
-</html>
+            <button class="option-btn" id="dim11" type="button
