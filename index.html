@@ -1,42 +1,131 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      // Suppress Vite HMR WebSocket connection warnings in sandbox environment
-      window.addEventListener('unhandledrejection', function(e) {
-        if (e && e.reason && typeof e.reason.message === 'string' && (
-          e.reason.message.includes('WebSocket') ||
-          e.reason.message.includes('vite')
-        )) {
-          e.preventDefault();
-        }
-      });
-    </script>
     <title>فيديو ماستر - صانع ومولد الفيديوهات بالذكاء الاصطناعي | VideoMaster AI</title>
     <meta name="description" content="استوديو متكامل لإنشاء وتوليد الفيديوهات الاحترافية بالذكاء الاصطناعي مع تعليق صوتي وموسيقى ومؤثرات حركية وتصدير فوري" />
-    <meta property="og:title" content="فيديو ماستر - صانع ومولد الفيديوهات بالذكاء الاصطناعي | VideoMaster AI" />
-    <meta property="og:description" content="استوديو متكامل لإنشاء وتوليد الفيديوهات الاحترافية بالذكاء الاصطناعي مع تعليق صوتي وموسيقى ومؤثرات حركية وتصدير فوري" />
-    <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="فيديو ماستر" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-B-yMjPpU.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Ao87Xrn5.css">
-  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
-  <body>
-    <div id="root"></div>
-  </body>
-</html>
-
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color: #0b0f19;
+        --card-bg: #111827;
+        --border-color: #1f2937;
+        --accent-primary: #ec4899;
+        --accent-secondary: #8b5cf6;
+        --accent-gold: #f59e0b;
+        --text-main: #f9fafb;
+        --text-muted: #9ca3af;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Cairo', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+      .app-container {
+        width: 100%;
+        max-width: 480px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        background: linear-gradient(135deg, #1f2937, #111827);
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo-icon {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 4px 12px rgba(236,72,153,0.3);
+      }
+      h1 {
+        font-size: 18px;
+        font-weight: 800;
+        color: #fff;
+      }
+      .badge {
+        font-size: 10px;
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-weight: 700;
+        display: inline-block;
+        margin-top: 3px;
+      }
+      .subtitle {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+      .content-body {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .card-box {
+        background: rgba(31, 41, 55, 0.5);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .card-box h3 {
+        font-size: 14px;
+        color: var(--accent-gold);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .card-box p {
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+      .btn-action {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: 0.2s;
