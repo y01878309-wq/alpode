@@ -151,7 +151,7 @@
         margin-bottom: 6px;
         font-weight: 600;
       }
-      input[type="text"], textarea {
+      input[type="text"], input[type="number"], textarea {
         width: 100%;
         background: #1f2937;
         border: 1px solid var(--border-color);
@@ -214,7 +214,7 @@
         color: var(--accent-gold);
         margin-bottom: 6px;
       }
-      /* كاريوكي الكلمات الحقيقي */
+      /* كاريوكي الكلمات المتزامنة */
       .karaoke-box {
         font-size: 15px;
         font-weight: 800;
@@ -296,11 +296,6 @@
         border-color: #fff;
         transform: scale(1.1);
       }
-      .range-slider {
-        width: 100%;
-        margin: 8px 0;
-        accent-color: var(--accent-gold);
-      }
     </style>
   </head>
   <body>
@@ -322,7 +317,7 @@
         <!-- بطاقة المشروع الرئيسية -->
         <div class="card-box">
           <h3>✨ مشروع سورة مريم (٥١-٥٣) جاهز للعرض</h3>
-          <p>تمت كتابة آيات التلاوة بالخط القرآني مع مؤثرات الكاريوكي المتزامنة. اضغط تشغيل للمعاينة أو صدر الفيديو فوراً!</p>
+          <p>قم بتحديد ثانية البداية التي ترغب بها ثم اضغط تشغيل للمعاينة أو التصدير فوراً!</p>
           <button class="btn-action btn-primary" id="exportBtn" type="button">📥 تصدير وتحميل الفيديو</button>
         </div>
 
@@ -360,7 +355,7 @@
           <div id="statusText" class="status-msg"></div>
         </div>
 
-        <!-- تخصيص اسم السورة والآيات وتوقيت الكاريوكي -->
+        <!-- تخصيص اسم السورة والآيات وثانية البداية -->
         <div class="card-box">
           <div class="form-group">
             <label>اسم السورة:</label>
@@ -375,13 +370,13 @@
             <textarea id="ayahInput" rows="2">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا وَكَانَ رَسُولًا نَّبِيًّا</textarea>
           </div>
 
-          <!-- شريط التحكم في الوقت والسرعة لضبط الكلمات مع الصوت بالضبط -->
+          <!-- التحكم في ثانية البداية (مثلاً تبدأ من ثانية 5، 20، أو أي وقت براحتك) -->
           <div class="form-group">
-            <label>⚡ سرعة ووقت تتابع الكلمات (أزل الوقت أو أسرعه): <span id="speedValue">500</span>ms</label>
-            <input type="range" class="range-slider" id="speedSlider" min="200" max="1500" step="50" value="500">
+            <label>⏱ تحديد ثانية البداية (ابدأ من الثانية التي تريدها، مثلاً: 5، 20):</label>
+            <input type="number" id="startTimeInput" value="0" min="0" placeholder="مثال: 20">
           </div>
 
-          <button class="btn-action btn-secondary" id="updateBtn" type="button">تحديث بيانات الآيات والسرعة</button>
+          <button class="btn-action btn-secondary" id="updateBtn" type="button">تحديث إعدادات البدء</button>
         </div>
 
         <!-- إعدادات القارئ -->
@@ -407,7 +402,7 @@
       </div>
     </div>
 
-    <!-- عنصر الصوت الحقيقي -->
+    <!-- عنصر الصوت -->
     <audio id="audioPlayerElement" style="display:none;"></audio>
 
     <script>
@@ -434,20 +429,6 @@
       }
       initKaraoke();
 
-      // التحكم في سرعة الوقت عبر الشريط
-      const speedSlider = document.getElementById('speedSlider');
-      const speedValue = document.getElementById('speedValue');
-      let currentSpeed = 500;
-
-      speedSlider.addEventListener('input', function() {
-        currentSpeed = parseInt(this.value);
-        speedValue.innerText = currentSpeed;
-        if(isPlaying) {
-          clearInterval(karaokeTimer);
-          startKaraokeLoop();
-        }
-      });
-
       // رفع الصورة وعرضها خلفية في المعاينة
       const imageUploadInput = document.getElementById('imageUploadInput');
       const imageNameDisplay = document.getElementById('imageNameDisplay');
@@ -467,7 +448,7 @@
         });
       }
 
-      // رفع ملف الصوت وتجهيزه
+      // رفع ملف الصوت
       const audioUploadInput = document.getElementById('audioUploadInput');
       const audioNameDisplay = document.getElementById('audioNameDisplay');
       const audioPlayerElement = document.getElementById('audioPlayerElement');
@@ -482,31 +463,33 @@
         });
       }
 
-      function startKaraokeLoop() {
-        karaokeTimer = setInterval(() => {
-          if(wordsElements.length > 0) {
-            wordsElements.forEach(el => el.classList.remove('active'));
-            wordsElements[currentWordIndex].classList.add('active');
-            currentWordIndex = (currentWordIndex + 1) % wordsElements.length;
-          }
-        }, currentSpeed);
-      }
-
-      // زر التشغيل والإيقاف (الصوت والكاريوكي معاً بانسجام تامة)
+      // زر التشغيل والإيقاف مع التحكم في ثانية البداية
       let isPlaying = false;
       const playBtn = document.getElementById('playBtn');
       if(playBtn) {
         playBtn.addEventListener('click', function() {
           isPlaying = !isPlaying;
           const status = document.getElementById('statusText');
+          const startTimeInput = document.getElementById('startTimeInput');
+          const startSeconds = parseFloat(startTimeInput.value) || 0;
 
           if(isPlaying) {
             this.innerText = "⏸";
             if(audioPlayerElement.src) {
+              // ضبط وقت بداية الصوت بناءً على اختيار المستخدم (مثلاً 5 أو 20 ثانية)
+              audioPlayerElement.currentTime = startSeconds;
               audioPlayerElement.play().catch(e => console.log(e));
             }
-            if(status) status.innerText = "▶ جاري تشغيل التلاوة والكاريوكي المتزامن...";
-            startKaraokeLoop();
+            if(status) status.innerText = `▶ جاري التشغيل بدءاً من الثانية ${startSeconds}...`;
+
+            // تشغيل تتابع الكلمات (الكاريوكي) بالتزامن
+            karaokeTimer = setInterval(() => {
+              if(wordsElements.length > 0) {
+                wordsElements.forEach(el => el.classList.remove('active'));
+                wordsElements[currentWordIndex].classList.add('active');
+                currentWordIndex = (currentWordIndex + 1) % wordsElements.length;
+              }
+            }, 600);
 
           } else {
             this.innerText = "▶";
@@ -523,10 +506,11 @@
       document.getElementById('updateBtn').addEventListener('click', function() {
         const surah = document.getElementById('surahInput').value;
         const range = document.getElementById('ayahRangeInput').value;
+        const startTimeInput = document.getElementById('startTimeInput').value;
         document.getElementById('dispSurah').innerText = surah + " • " + range;
         initKaraoke();
         const status = document.getElementById('statusText');
-        status.innerText = "✅ تم تحديث بيانات الآيات والسرعة بنجاح!";
+        status.innerText = `✅ تم التحديث! سيبدأ التشغيل من الثانية ${startTimeInput}`;
         setTimeout(() => { status.innerText = ""; }, 3000);
       });
 
