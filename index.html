@@ -47,7 +47,7 @@
       }
       header {
         background: linear-gradient(135deg, #1f2937, #111827);
-        padding: 20px;
+        padding: 16px 20px;
         border-bottom: 1px solid var(--border-color);
         display: flex;
         align-items: center;
@@ -89,6 +89,33 @@
         color: var(--text-muted);
         margin-top: 2px;
       }
+      /* شريط الأزرار العلوية السريعة */
+      .quick-actions-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 12px 16px;
+        background: rgba(17, 24, 39, 0.95);
+        border-bottom: 1px solid var(--border-color);
+      }
+      .quick-chip {
+        font-size: 11px;
+        background: #1f2937;
+        color: #fff;
+        border: 1px solid var(--border-color);
+        padding: 6px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+      }
+      .quick-chip.project { background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #10b981; }
+      .quick-chip.ai { background: rgba(139, 92, 246, 0.15); border-color: #8b5cf6; color: #c4b5fd; }
+      .quick-chip.apk { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; }
+      .quick-chip.export { background: linear-gradient(135deg, var(--accent-primary), #db2777); color: #fff; border: none; }
+
       .content-body {
         padding: 20px;
         display: flex;
@@ -131,21 +158,13 @@
         transition: 0.2s;
         margin-top: 8px;
       }
-      .btn-primary {
-        background: linear-gradient(135deg, var(--accent-primary), #db2777);
-        color: white;
-        box-shadow: 0 4px 15px rgba(236,72,153,0.3);
-      }
-      .btn-primary:active {
-        transform: scale(0.98);
-      }
-      .btn-secondary {
-        background: #374151;
-        color: white;
-      }
-      .btn-secondary:active {
-        transform: scale(0.98);
-      }
+      .btn-primary { background: linear-gradient(135deg, var(--accent-primary), #db2777); color: white; box-shadow: 0 4px 15px rgba(236,72,153,0.3); }
+      .btn-secondary { background: #374151; color: white; }
+      .btn-orange { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+      .btn-green { background: #10b981; color: white; }
+      .btn-blue { background: #3b82f6; color: white; }
+      .btn-purple { background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary)); color: white; }
+      
       .form-group {
         margin-bottom: 14px;
         text-align: right;
@@ -167,9 +186,7 @@
         font-family: 'Cairo', sans-serif;
         font-size: 13px;
       }
-      input[type="file"] {
-        display: none;
-      }
+      input[type="file"] { display: none; }
       .file-upload-btn {
         display: block;
         width: 100%;
@@ -194,7 +211,6 @@
         align-items: center;
         justify-content: center;
         border: 1px solid var(--border-color);
-        transition: height 0.3s ease;
       }
       .preview-bg {
         position: absolute;
@@ -208,7 +224,7 @@
         padding: 15px;
       }
       .preview-text h4 {
-        font-size: 14px;
+        font-size: 13px;
         color: var(--accent-gold);
         margin-bottom: 6px;
       }
@@ -279,6 +295,30 @@
         border-color: #fff;
         transform: scale(1.1);
       }
+      .suggestions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .sug-chip {
+        background: #1f2937;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        font-size: 11px;
+        padding: 6px;
+        border-radius: 6px;
+        text-align: center;
+        cursor: pointer;
+      }
+      .sug-chip:hover { background: #374151; color: #fff; }
+      .timeline-card {
+        background: #1f2937;
+        border: 1px solid var(--accent-gold);
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 10px;
+      }
       .range-slider {
         width: 100%;
         margin: 8px 0;
@@ -297,189 +337,85 @@
             <span class="badge">AI STUDIO</span>
           </div>
         </div>
-        <div class="subtitle">سورة مريم (٥١ - ٥٣)</div>
+        <div class="subtitle">سورة مريم (٥١ - ٥٣) • تلاوة خاشعة</div>
       </header>
+
+      <!-- شريط الأزرار العلوية السريعة (المطابق للصور تماماً) -->
+      <div class="quick-actions-bar">
+        <div class="quick-chip project">📖 مشروع سورة مريم والصورة</div>
+        <div class="quick-chip ai">✨ القوالب الجاهزة</div>
+        <div class="quick-chip apk">📱 تثبيت كـ تطبيق APK</div>
+        <div class="quick-chip export">📥 تصدير وتحميل الفيديو</div>
+        <div class="quick-chip" style="background:#1f2937; color:#9ca3af;">🌐 EN</div>
+      </div>
 
       <div class="content-body">
         
-        <!-- بطاقة المشروع الرئيسية -->
+        <!-- 1. بطاقة مشروع سورة مريم والأزرار المباشرة -->
         <div class="card-box">
-          <h3>✨ مشروع سورة مريم (٥١-٥٣) جاهز للعرض</h3>
-          <p>تمت كتابة آيات التلاوة بالخط القرآني مع مؤثرات الكاريوكي المتزامنة. اضغط تشغيل للمعاينة أو صدر الفيديو فوراً!</p>
-          <button class="btn-action btn-primary" id="exportBtn">📥 تصدير وتحميل الفيديو</button>
+          <h3>✨ مشروع تلاوة سورة مريم (٥١-٥٣) جاهز للعرض والتعديل والتصدير!</h3>
+          <p>تمت كتابة آيات التلاوة بالخط القرآني مع مؤثرات الكاريوكي المتزامنة. اضغط زر التشغيل للمعاينة، أو ارفع صورتك وملف الصوت، أو اضغط تصدير لتحميل الفيديو فوراً!</p>
+          <button class="btn-action btn-orange" onclick="document.getElementById('livePreviewScreen').scrollIntoView({behavior: 'smooth'})">▶ تشغيل الفيديو</button>
+          <button class="btn-action btn-primary" onclick="alert('🎉 جاري رندر وتصدير الفيديو بالذكاء الاصطناعي وتجهيزه للتحميل!')">📥 تصدير وتحميل الفيديو</button>
+          <button class="btn-action btn-green">📱 خيارات وتثبيت الـ APK</button>
+          <button class="btn-action btn-blue">💻 سورس كود المشروع (ZIP)</button>
+          <button class="btn-action btn-secondary">📦 حزمة التطبيق الجاهزة (ZIP)</button>
         </div>
 
-        <!-- الوسائط: رفع الصور وملفات الصوت -->
+        <!-- 2. قسم الوسائط: صورتك وصوت التلاوة واسم الشيخ -->
         <div class="card-box">
           <h3>📁 الوسائط: صورتك وصوت التلاوة</h3>
-          <p>ارفع صورتك وملف الصوت، ليظهر اسم الشيخ وتلاوته فوراً على شاشة الفيديو</p>
+          <p>ارفع صورتك وملف الصوت، واكتب اسم الشيخ ليظهر فوراً على شاشة الفيديو</p>
           
           <label class="file-upload-btn" for="imageUpload">🖼 اختر صورة من جهازك</label>
-          <input type="file" id="imageUpload" accept="image/*">
+          <input type="file" id="imageUpload" accept="image/*" onchange="alert('✅ تم رفع الصورة بنجاح')">
 
           <label class="file-upload-btn" for="audioUpload">🎵 اختر ملف الصوت (التلاوة)</label>
-          <input type="file" id="audioUpload" accept="audio/*">
-        </div>
-
-        <!-- أبعاد الشاشة والمشاهد -->
-        <div class="card-box">
-          <label>أبعاد شاشة الفيديو:</label>
-          <div class="options-row">
-            <button class="option-btn active" id="dim916" type="button">9:16 (عمودي)</button>
-            <button class="option-btn" id="dim169" type="button">16:9 (أفقي)</button>
-            <button class="option-btn" id="dim11" type="button">1:1 (مربع)</button>
-          </div>
-
-          <div class="preview-screen" id="previewScreen">
-            <div class="preview-bg"></div>
-            <div class="preview-text">
-              <h4 id="dispSurah">سورة مريم • الآيات ٥١ - ٥٣</h4>
-              <p id="dispAyah" style="color: var(--accent-gold);">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا</p>
-            </div>
-            <div class="play-btn-circle" id="playBtn">▶</div>
-          </div>
-          <div id="statusText" class="status-msg"></div>
-        </div>
-
-        <!-- إعدادات الصوت والموسيقى والموجات والكابشن -->
-        <div class="card-box">
-          <h3>🎛 إعدادات الصوت والنصوص والمؤثرات</h3>
-          
-          <div class="form-group">
-            <label>الموسيقى الخلفية:</label>
-            <select>
-              <option>بدون موسيقى (صوت التلاوة فقط)</option>
-              <option>نغمات هادئة وخاشعة</option>
-              <option>مؤثرات طبيعية</option>
-            </select>
-          </div>
-
-          <label>مستوى صوت الموسيقى (0%):</label>
-          <input type="range" class="range-slider" min="0" max="100" value="0">
-
-          <label style="margin-top: 10px;">مستوى صوت التلاوة / التعليق (100%):</label>
-          <input type="range" class="range-slider" min="0" max="100" value="100">
+          <input type="file" id="audioUpload" accept="audio/*" onchange="alert('✅ تم رفع ملف الصوت بنجاح')">
 
           <div class="form-group" style="margin-top: 15px;">
-            <label><input type="checkbox" checked> إظهار موجات الصوت المتحركة</label>
-            <label style="margin-top: 8px;"><input type="checkbox" checked id="captionToggle"> نصوص الكابشن والترجمة التلقائية</label>
+            <label><input type="checkbox" checked id="showSheikhToggle"> إظهار على الفيديو</label>
+            <label style="margin-top: 8px;">القارئ: اكتب اسم الشيخ هنا</label>
+            <input type="text" id="sheikhNameInput" value="القارئ: يوسف خربوش" oninput="document.getElementById('dispSheikhLive').innerText = this.value">
+          </div>
+
+          <label style="font-size: 11px; color: var(--text-muted);">اقتراحات سريعة:</label>
+          <div class="suggestions-grid">
+            <div class="sug-chip" onclick="setSheikh('القارئ: عبد الباسط عبد الصمد')">القارئ: عبد الباسط عبد الصمد</div>
+            <div class="sug-chip" onclick="setSheikh('القارئ: مشاري راشد العفاسي')">القارئ: مشاري راشد العفاسي</div>
+            <div class="sug-chip" onclick="setSheikh('القارئ: اسلام صبحي')">القارئ: اسلام صبحي</div>
+            <div class="sug-chip" onclick="setSheikh('القارئ: ماهر المعيقلي')">القارئ: ماهر المعيقلي</div>
+            <div class="sug-chip" onclick="setSheikh('القارئ: رعد محمد الكردي')">القارئ: رعد محمد الكردي</div>
           </div>
         </div>
 
-        <!-- تخصيص اسم السورة والآيات -->
+        <!-- 3. تخصيص اسم السورة والآيات وضبط المدة -->
         <div class="card-box">
-          <div class="form-group">
-            <label>اسم السورة:</label>
-            <input type="text" id="surahInput" value="سورة مريم">
+          <h3>📖 تخصيص اسم السورة والآيات وضبط المدة</h3>
+          <p>اكتب اسم السورة والآيات بنفسك، أو اختر سورة لتوليدها تلقائياً، مع ضبط دقيق لزمن الفيديو (54 ثانية)</p>
+          
+          <div style="background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 12px; color: var(--accent-gold);">المدة الحالية : 54.0s</span>
+            <button class="btn-action btn-green" style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;" onclick="alert('✓ تم تثبيت مدة 54 ثانية بنجاح')">✓ تثبيت 54 ثانية بالضبط</button>
           </div>
+
+          <div class="form-group">
+            <label>اسم السورة (اكتب ما تشاء):</label>
+            <input type="text" id="surahCustomInput" value="سُورَةُ مَرْيَمَ" oninput="updateSurahDisplay()">
+          </div>
+
           <div class="form-group">
             <label>أرقام الآيات:</label>
-            <input type="text" id="ayahRangeInput" value="الآيات ٥١ - ٥٣">
+            <input type="text" id="ayahRangeCustom" value="الآيات ٥١ - ٥٣" oninput="updateSurahDisplay()">
           </div>
+
           <div class="form-group">
-            <label>النص القرآني:</label>
-            <textarea id="ayahInput" rows="2">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا وَكَانَ رَسُولًا نَّبِيًّا</textarea>
+            <label>تحديد مدة الفيديو الإجمالية:</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" value="54" style="flex: 1; text-align: center;">
+              <button class="btn-action btn-secondary" style="width: auto; margin: 0; padding: 0 15px;" onclick="alert('تم تطبيق المدة بنجاح')">تطبيق المدة</button>
+            </div>
           </div>
-          <button class="btn-action btn-secondary" id="updateBtn" type="button">تحديث بيانات الآيات</button>
-        </div>
 
-        <!-- إعدادات القارئ -->
-        <div class="card-box">
-          <div class="form-group">
-            <label>اسم الشيخ / القارئ (يظهر على الفيديو):</label>
-            <input type="text" id="reciterInput" value="القارئ: يوسف خربوش">
-          </div>
-        </div>
-
-        <!-- لون تمييز الكاريوكي -->
-        <div class="card-box">
-          <label>لون تمييز الكلمات (كاريوكي):</label>
-          <div class="color-palette" id="colorPalette">
-            <div class="color-dot selected" data-color="#f59e0b" style="background: #f59e0b;"></div>
-            <div class="color-dot" data-color="#ec4899" style="background: #ec4899;"></div>
-            <div class="color-dot" data-color="#10b981" style="background: #10b981;"></div>
-            <div class="color-dot" data-color="#3b82f6" style="background: #3b82f6;"></div>
-            <div class="color-dot" data-color="#ffffff" style="background: #ffffff;"></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <script>
-      let isPlaying = false;
-
-      // زر التشغيل والإيقاف
-      document.getElementById('playBtn').addEventListener('click', function() {
-        isPlaying = !isPlaying;
-        const status = document.getElementById('statusText');
-        if(isPlaying) {
-          this.innerText = "⏸";
-          status.innerText = "▶ جاري تشغيل التلاوة مع الكاريوكي والمؤثرات...";
-        } else {
-          this.innerText = "▶";
-          status.innerText = "⏸ تم الإيقاف المؤقت";
-        }
-      });
-
-      // زر تحديث البيانات
-      document.getElementById('updateBtn').addEventListener('click', function() {
-        const surah = document.getElementById('surahInput').value;
-        const range = document.getElementById('ayahRangeInput').value;
-        const ayah = document.getElementById('ayahInput').value;
-        document.getElementById('dispSurah').innerText = surah + " • " + range;
-        document.getElementById('dispAyah').innerText = ayah;
-        const status = document.getElementById('statusText');
-        status.innerText = "✅ تم تحديث بيانات الفيديو بنجاح!";
-        setTimeout(() => { status.innerText = ""; }, 3000);
-      });
-
-      // زر التصدير
-      document.getElementById('exportBtn').addEventListener('click', function() {
-        const status = document.getElementById('statusText');
-        status.innerText = "⏳ جاري تصدير ورندر الفيديو بالذكاء الاصطناعي...";
-        setTimeout(() => {
-          status.innerText = "🎉 تم تجهيز الفيديو وتنزيله بنجاح!";
-        }, 2500);
-      });
-
-      // أزرار الأبعاد
-      const screen = document.getElementById('previewScreen');
-      const btn916 = document.getElementById('dim916');
-      const btn169 = document.getElementById('dim169');
-      const btn11 = document.getElementById('dim11');
-
-      btn916.addEventListener('click', function() {
-        btn916.classList.add('active');
-        btn169.classList.remove('active');
-        btn11.classList.remove('active');
-        screen.style.height = '240px';
-      });
-
-      btn169.addEventListener('click', function() {
-        btn169.classList.add('active');
-        btn916.classList.remove('active');
-        btn11.classList.remove('active');
-        screen.style.height = '150px';
-      });
-
-      btn11.addEventListener('click', function() {
-        btn11.classList.add('active');
-        btn916.classList.remove('active');
-        btn169.classList.remove('active');
-        screen.style.height = '200px';
-      });
-
-      // ألوان الكاريوكي
-      const dots = document.querySelectorAll('.color-dot');
-      dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-          dots.forEach(d => d.classList.remove('selected'));
-          this.classList.add('selected');
-          const color = this.getAttribute('data-color');
-          document.getElementById('dispAyah').style.color = color;
-        });
-      });
-    </script>
-  </body>
-</html>
+          <label style="margin-top: 10px;">اختيار سورة سريعة:</label>
+          <div class="
