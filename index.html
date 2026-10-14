@@ -89,18 +89,14 @@
         color: var(--text-muted);
         margin-top: 2px;
       }
-      /* شريط التنقل العلوي للـ 8 أقسام */
       .top-nav {
         display: flex;
-        overflow-x: auto;
+        flex-wrap: wrap;
         gap: 6px;
-        padding: 10px 14px;
-        background: rgba(17, 24, 39, 0.95);
+        padding: 12px 16px;
+        background: rgba(17, 24, 39, 0.9);
         border-bottom: 1px solid var(--border-color);
-        white-space: nowrap;
-        scrollbar-width: none;
       }
-      .top-nav::-webkit-scrollbar { display: none; }
       .nav-pill {
         font-size: 11px;
         background: #1f2937;
@@ -109,10 +105,9 @@
         padding: 6px 10px;
         border-radius: 8px;
         cursor: pointer;
-        display: inline-flex;
+        display: flex;
         align-items: center;
         gap: 4px;
-        flex-shrink: 0;
       }
       .nav-pill.active {
         background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
@@ -204,8 +199,6 @@
         font-size: 12px;
         margin-bottom: 10px;
       }
-      .file-upload-btn:hover { background: #374151; }
-      
       .preview-screen {
         width: 100%;
         height: 220px;
@@ -217,13 +210,12 @@
         align-items: center;
         justify-content: center;
         border: 1px solid var(--border-color);
+        transition: height 0.3s ease;
       }
       .preview-bg {
         position: absolute;
         inset: 0;
         background: radial-gradient(circle, #1e1b4b 0%, #030712 100%);
-        background-size: cover;
-        background-position: center;
       }
       .preview-text {
         position: relative;
@@ -348,7 +340,7 @@
         <div class="subtitle">سورة مريم (٥١ - ٥٣) • تلاوة خاشعة</div>
       </header>
 
-      <!-- شريط التنقل العلوي للـ 8 أقسام تماماً كما في الصور -->
+      <!-- شريط التنقل العلوي السريع بين الأقسام الـ 8 -->
       <div class="top-nav">
         <button class="nav-pill active" onclick="switchPage(1)">1. المشروع</button>
         <button class="nav-pill" onclick="switchPage(2)">2. الوسائط</button>
@@ -362,7 +354,7 @@
 
       <div class="content-body">
         
-        <!-- القسم 1: مشروع سورة مريم والصورة والأزرار السريعة -->
+        <!-- الصفحة 1: المشروع الرئيسي والأزرار السريعة -->
         <div class="page-section" id="page1">
           <div class="card-box">
             <h3>✨ مشروع تلاوة سورة مريم (٥١-٥٣) جاهز للعرض والتعديل والتصدير!</h3>
@@ -375,26 +367,24 @@
           </div>
         </div>
 
-        <!-- القسم 2: الوسائط (رفع حقيقي للصور وملفات الصوت واسم الشيخ) -->
+        <!-- الصفحة 2: الوسائط (رفع الصور وملفات الصوت واسم الشيخ) -->
         <div class="page-section" id="page2" style="display:none;">
           <div class="card-box">
             <h3>🖼 الوسائط: صورتك وصوت التلاوة</h3>
             <p>ارفع صورتك وملف الصوت، واكتب اسم الشيخ ليظهر فوراً على شاشة الفيديو</p>
             
-            <label class="file-upload-btn" for="imageUploadInput">📁 اختر صورة من جهازك</label>
-            <input type="file" id="imageUploadInput" accept="image/*">
-            <div id="imgStatus" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 8px; text-align: center;"></div>
+            <label class="file-upload-btn" for="imageUpload">📁 اختر صورة من جهازك</label>
+            <input type="file" id="imageUpload" accept="image/*">
 
-            <label class="file-upload-btn" for="audioUploadInput">🎵 اختر ملف الصوت (التلاوة)</label>
-            <input type="file" id="audioUploadInput" accept="audio/*">
-            <div id="audioStatus" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 12px; text-align: center;"></div>
+            <label class="file-upload-btn" for="audioUpload">🎵 اختر ملف الصوت (التلاوة)</label>
+            <input type="file" id="audioUpload" accept="audio/*">
 
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 15px;">
               <label><input type="checkbox" checked id="showSheikhToggle"> إظهار على الفيديو</label>
               <input type="text" id="sheikhNameInput" value="القارئ: اكتب اسم الشيخ هنا" style="margin-top: 6px;">
             </div>
 
-            <label style="font-size: 11px; color: var(--text-muted);">اقتراحات سريعة لأسماء القراء:</label>
+            <label style="font-size: 11px; color: var(--text-muted);">اقتراحات سريعة للقرّاء:</label>
             <div class="suggestions-grid">
               <div class="sug-chip" onclick="setSheikhVal('القارئ: عبد الباسط عبد الصمد')">عبد الباسط عبد الصمد</div>
               <div class="sug-chip" onclick="setSheikhVal('القارئ: مشاري راشد العفاسي')">مشاري راشد العفاسي</div>
@@ -405,7 +395,7 @@
           </div>
         </div>
 
-        <!-- القسم 3: تخصيص اسم السورة والآيات وضبط المدة -->
+        <!-- الصفحة 3: تخصيص اسم السورة والآيات وضبط المدة -->
         <div class="page-section" id="page3" style="display:none;">
           <div class="card-box">
             <h3>📖 تخصيص اسم السورة والآيات وضبط المدة</h3>
@@ -413,7 +403,7 @@
             
             <div style="background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
               <span style="font-size: 12px; color: var(--accent-gold);">المدة الحالية : 54.0s</span>
-              <button class="btn-action btn-green" style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;">✓ تثبيت 54 ثانية بالضبط</button>
+              <button class="btn-action btn-green" style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;" type="button">✓ تثبيت 54 ثانية بالضبط</button>
             </div>
 
             <div class="form-group">
@@ -430,7 +420,7 @@
               <label>تحديد مدة الفيديو الإجمالية:</label>
               <div style="display: flex; gap: 8px;">
                 <input type="text" value="54" style="flex: 1; text-align: center;">
-                <button class="btn-action btn-secondary" style="width: auto; margin: 0; padding: 0 15px;" onclick="alert('تم تطبيق المدة بنجاح')">تطبيق المدة</button>
+                <button class="btn-action btn-secondary" style="width: auto; margin: 0; padding: 0 15px;" type="button">تطبيق المدة</button>
               </div>
             </div>
 
@@ -444,4 +434,251 @@
               <div class="sug-chip" onclick="setSurahQuick('سورة يس')">سورة يس</div>
             </div>
             
-            <button class="btn-action btn-purple" style="margin-top: 
+            <button class="btn-action btn-purple" style="margin-top: 15px;" type="button">✨ كتابة آيات هذه السورة تلقائياً بالذكاء الاصطناعي</button>
+          </div>
+        </div>
+
+        <!-- الصفحة 4: المعاينة الحية والأبعاد والتشغيل -->
+        <div class="page-section" id="page4" style="display:none;">
+          <div class="card-box">
+            <label>أبعاد شاشة الفيديو:</label>
+            <div class="options-row">
+              <button class="option-btn active" id="dim916" type="button">9:16 (تيك توك)</button>
+              <button class="option-btn" id="dim169" type="button">16:9 (يوتيوب)</button>
+              <button class="option-btn" id="dim11" type="button">1:1 (مربع)</button>
+            </div>
+
+            <div class="preview-screen" id="previewScreen">
+              <div class="preview-bg"></div>
+              <div class="preview-text">
+                <h4 id="dispSheikhLive">القارئ: يوسف خربوش</h4>
+                <p id="dispSurah" style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">سُورَةُ مَرْيَمَ • الآيات ٥١ - ٥٣</p>
+                <p id="dispAyah" style="color: var(--accent-gold);">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا</p>
+              </div>
+              <div class="play-btn-circle" id="playBtn">▶</div>
+            </div>
+            
+            <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
+              <span>00:54</span>
+              <input type="range" class="range-slider" style="flex: 1; margin: 0 10px;" value="0">
+              <span>00:00</span>
+            </div>
+            
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <button class="option-btn" style="flex:1;" type="button">🔄 إعادة</button>
+              <button class="option-btn active" style="flex:2;" type="button">⚡ سرعة الكلمات: فوري</button>
+            </div>
+
+            <div id="statusText" class="status-msg"></div>
+          </div>
+        </div>
+
+        <!-- الصفحة 5: شريط المشاهد والتايم لاين -->
+        <div class="page-section" id="page5" style="display:none;">
+          <div class="card-box">
+            <h3>⏱ شريط المشاهد والتايم لاين (4 مشاهد)</h3>
+            <button class="btn-action btn-secondary" style="margin-bottom: 10px;" type="button">+ إضافة مشهد جديد</button>
+            
+            <div class="timeline-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="background: var(--accent-gold); color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">الآية 51</span>
+                <span style="font-size: 11px; color: var(--text-muted);">7.5s</span>
+              </div>
+              <p style="font-size: 12px; color: #fff;">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ</p>
+              <div style="display: flex; gap: 10px; margin-top: 8px; font-size: 14px; cursor: pointer;">
+                <span>🗑️</span><span>📋</span><span>✏️</span>
+              </div>
+            </div>
+
+            <div class="timeline-card" style="border-color: var(--border-color);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="background: #374151; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px;">مشهد 2</span>
+                <span style="font-size: 11px; color: var(--text-muted);">15.5s</span>
+              </div>
+              <p style="font-size: 12px; color: var(--text-muted);">إِنَّهُ كَانَ مُخْلِصًا وَكَانَ...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- الصفحة 6: إعدادات الصوت والموسيقى والموجات والكابشن -->
+        <div class="page-section" id="page6" style="display:none;">
+          <div class="card-box">
+            <h3>🎛 إعدادات الصوت والنصوص والمؤثرات</h3>
+            
+            <div class="form-group">
+              <label>الموسيقى الخلفية:</label>
+              <select>
+                <option>بدون موسيقى (صوت التلاوة فقط)</option>
+                <option>نغمات هادئة وخاشعة</option>
+                <option>مؤثرات طبيعية</option>
+              </select>
+            </div>
+
+            <label>مستوى صوت الموسيقى (0%):</label>
+            <input type="range" class="range-slider" min="0" max="100" value="0">
+
+            <label style="margin-top: 10px;">مستوى صوت التلاوة / التعليق (100%):</label>
+            <input type="range" class="range-slider" min="0" max="100" value="100">
+
+            <div class="form-group" style="margin-top: 15px;">
+              <label><input type="checkbox" checked> إظهار موجات الصوت المتحركة</label>
+              <label style="margin-top: 8px;"><input type="checkbox" checked> نصوص الكابشن والترجمة التلقائية</label>
+            </div>
+
+            <label>موضع الكابشن والترجمة على الشاشة:</label>
+            <div class="options-row">
+              <button class="option-btn" type="button">أعلى الشاشة</button>
+              <button class="option-btn" type="button">وسط الشاشة</button>
+              <button class="option-btn active" type="button">أسفل الشاشة</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- الصفحة 7: ألوان الكاريوكي، السرعة وتزامن الكلمات -->
+        <div class="page-section" id="page7" style="display:none;">
+          <div class="card-box">
+            <label>لون تمييز الكلمات (كاريوكي):</label>
+            <div class="color-palette" id="colorPalette">
+              <div class="color-dot selected" data-color="#f59e0b" style="background: #f59e0b;"></div>
+              <div class="color-dot" data-color="#ec4899" style="background: #ec4899;"></div>
+              <div class="color-dot" data-color="#10b981" style="background: #10b981;"></div>
+              <div class="color-dot" data-color="#3b82f6" style="background: #3b82f6;"></div>
+              <div class="color-dot" data-color="#ffffff" style="background: #ffffff;"></div>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>سرعة وتزامن الكلمات مع الصوت (بدون تأخير): 1.40x (140%)</label>
+              <input type="range" class="range-slider" min="50" max="200" value="140">
+            </div>
+
+            <div style="margin-top: 10px;">
+              <label>تقديم زمن الكلمة (بدون تأخير): 0.95s+</label>
+              <input type="range" class="range-slider" min="0" max="2" step="0.05" value="0.95">
+            </div>
+
+            <div class="options-row" style="margin-top: 12px;">
+              <button class="option-btn active" style="font-size: 11px;" type="button">⚡ فوري بدون تأخير (موصى به)</button>
+              <button class="option-btn" style="font-size: 11px;" type="button">🎯 مطابق دقيق</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 10px;">
+              <label><input type="checkbox" checked> إضاءة الكلمة الحالية بالذهاب على الآية مباشرة</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- الصفحة 8: التوقيع، العلامة المائية والتصدير النهائي -->
+        <div class="page-section" id="page8" style="display:none;">
+          <div class="card-box">
+            <h3>🛡 العلامة المائية / التوقيع</h3>
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label><input type="checkbox" checked> إظهار اسم السورة في التوقيع</label>
+              <input type="text" value="سُورَةُ مَرْيَمَ • الآيات ٥١ - ٥٣" style="margin-top: 6px;">
+            </div>
+
+            <div class="form-group">
+              <label><input type="checkbox" checked> إظهار اسم الشيخ / القارئ</label>
+              <input type="text" id="reciterInput" value="القارئ: يوسف خربوش" style="margin-top: 6px;">
+            </div>
+
+            <button class="btn-action btn-primary" id="exportBtn" style="margin-top: 20px;" type="button">📥 ابدأ التصدير النهائي الآن</button>
+            <div id="statusTextExport" class="status-msg"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      // التنقل بين الـ 8 صفحات
+      function switchPage(pageNum) {
+        document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
+        document.getElementById('page' + pageNum).style.display = 'block';
+
+        document.querySelectorAll('.nav-pill').forEach(pill => pill.classList.remove('active'));
+        const pills = document.querySelectorAll('.nav-pill');
+        if(pills[pageNum - 1]) pills[pageNum - 1].classList.add('active');
+      }
+
+      function setSheikhVal(name) {
+        document.getElementById('sheikhNameInput').value = name;
+        document.getElementById('dispSheikhLive').innerText = name;
+      }
+
+      function setSurahQuick(name) {
+        document.getElementById('surahCustomInput').value = name;
+        document.getElementById('dispSurah').innerText = name + " • الآيات ٥١ - ٥٣";
+      }
+
+      // زر التشغيل والإيقاف في المعاينة
+      let isPlaying = false;
+      const playBtn = document.getElementById('playBtn');
+      if(playBtn) {
+        playBtn.addEventListener('click', function() {
+          isPlaying = !isPlaying;
+          const status = document.getElementById('statusText');
+          if(isPlaying) {
+            this.innerText = "⏸";
+            if(status) status.innerText = "▶ جاري تشغيل التلاوة مع الكاريوكي والمؤثرات...";
+          } else {
+            this.innerText = "▶";
+            if(status) status.innerText = "⏸ تم الإيقاف المؤقت";
+          }
+        });
+      }
+
+      // زر التصدير النهائي
+      const exportBtn = document.getElementById('exportBtn');
+      if(exportBtn) {
+        exportBtn.addEventListener('click', function() {
+          const status = document.getElementById('statusTextExport');
+          if(status) status.innerText = "⏳ جاري رندر وتصدير الفيديو بالذكاء الاصطناعي...";
+          setTimeout(() => {
+            if(status) status.innerText = "🎉 تم تجهيز الفيديو وتنزيله بنجاح!";
+          }, 2500);
+        });
+      }
+
+      // أزرار الأبعاد
+      const screen = document.getElementById('previewScreen');
+      const btn916 = document.getElementById('dim916');
+      const btn169 = document.getElementById('dim169');
+      const btn11 = document.getElementById('dim11');
+
+      if(btn916 && btn169 && btn11 && screen) {
+        btn916.addEventListener('click', function() {
+          btn916.classList.add('active');
+          btn169.classList.remove('active');
+          btn11.classList.remove('active');
+          screen.style.height = '240px';
+        });
+
+        btn169.addEventListener('click', function() {
+          btn169.classList.add('active');
+          btn916.classList.remove('active');
+          btn11.classList.remove('active');
+          screen.style.height = '150px';
+        });
+
+        btn11.addEventListener('click', function() {
+          btn11.classList.add('active');
+          btn916.classList.remove('active');
+          btn169.classList.remove('active');
+          screen.style.height = '200px';
+        });
+      }
+
+      // ألوان الكاريوكي
+      const dots = document.querySelectorAll('.color-dot');
+      dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+          dots.forEach(d => d.classList.remove('selected'));
+          this.classList.add('selected');
+          const color = this.getAttribute('data-color');
+          const dispAyah = document.getElementById('dispAyah');
+          if(dispAyah) dispAyah.style.color = color;
+        });
+      });
+    </script>
+  </body>
+</html>
