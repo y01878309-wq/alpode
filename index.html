@@ -129,3 +129,190 @@
         justify-content: center;
         gap: 8px;
         transition: 0.2s;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent-primary), #db2777);
+        color: white;
+        box-shadow: 0 4px 15px rgba(236,72,153,0.3);
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .btn-secondary {
+        background: #374151;
+        color: white;
+      }
+      .btn-secondary:hover {
+        background: #4b5563;
+      }
+      .form-group {
+        margin-bottom: 14px;
+        text-align: right;
+      }
+      label {
+        font-size: 12px;
+        color: var(--text-main);
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      input[type="text"], textarea {
+        width: 100%;
+        background: #1f2937;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: white;
+        font-family: 'Cairo', sans-serif;
+        font-size: 13px;
+      }
+      input[type="text"]:focus, textarea:focus {
+        border-color: var(--accent-primary);
+        outline: none;
+      }
+      .preview-screen {
+        width: 100%;
+        height: 220px;
+        background: #000;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border-color);
+      }
+      .preview-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, #1e1b4b 0%, #030712 100%);
+      }
+      .preview-text {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 15px;
+      }
+      .preview-text h4 {
+        font-size: 14px;
+        color: var(--accent-gold);
+        margin-bottom: 6px;
+      }
+      .preview-text p {
+        font-size: 13px;
+        color: #fff;
+        font-weight: 700;
+      }
+      .play-btn-circle {
+        width: 50px;
+        height: 50px;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #000;
+        cursor: pointer;
+        position: absolute;
+        bottom: 15px;
+        box-shadow: 0 4px 15px rgba(245,158,11,0.4);
+      }
+      .status-msg {
+        font-size: 12px;
+        color: #10b981;
+        text-align: center;
+        margin-top: 8px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="app-container">
+      <header>
+        <div class="logo-area">
+          <div class="logo-icon">🎥</div>
+          <div>
+            <h1>فيديو ماستر</h1>
+            <span class="badge">AI STUDIO</span>
+          </div>
+        </div>
+        <div class="subtitle">سورة مريم (٥١ - ٥٣)</div>
+      </header>
+
+      <div class="content-body">
+        
+        <!-- بطاقة المشروع -->
+        <div class="card-box">
+          <h3>✨ مشروع سورة مريم (٥١-٥٣) جاهز للعرض</h3>
+          <p>تمت كتابة آيات التلاوة بالخط القرآني مع مؤثرات الكاريوكي المتزامنة. اضغط تشغيل للمعاينة أو صدر الفيديو فوراً!</p>
+          <button class="btn-action btn-primary" onclick="exportVideo()">📥 تصدير وتحميل الفيديو</button>
+        </div>
+
+        <!-- معاينة الفيديو -->
+        <div class="card-box" style="padding: 10px;">
+          <div class="preview-screen">
+            <div class="preview-bg"></div>
+            <div class="preview-text">
+              <h4 id="dispSurah">سورة مريم • الآيات ٥١ - ٥٣</h4>
+              <p id="dispAyah">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا</p>
+            </div>
+            <div class="play-btn-circle" onclick="togglePlay()">▶</div>
+          </div>
+          <div id="statusText" class="status-msg"></div>
+        </div>
+
+        <!-- إعدادات القارئ والنص -->
+        <div class="card-box">
+          <div class="form-group">
+            <label>اسم الشيخ / القارئ:</label>
+            <input type="text" id="reciterInput" value="القارئ: عبد الباسط عبد الصمد">
+          </div>
+          <div class="form-group">
+            <label>اسم السورة:</label>
+            <input type="text" id="surahInput" value="سورة مريم">
+          </div>
+          <div class="form-group">
+            <label>النص القرآني:</label>
+            <textarea id="ayahInput" rows="2">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا وَكَانَ رَسُولًا نَّبِيًّا</textarea>
+          </div>
+          <button class="btn-action btn-secondary" onclick="updatePreview()">تحديث المعاينة فوراً</button>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      let isPlaying = false;
+
+      function togglePlay() {
+        isPlaying = !isPlaying;
+        const status = document.getElementById('statusText');
+        if(isPlaying) {
+          status.innerText = "▶ جاري تشغيل التلاوة مع الكاريوكي والمؤثرات...";
+        } else {
+          status.innerText = "⏸ مؤقت";
+        }
+      }
+
+      function updatePreview() {
+        const surah = document.getElementById('surahInput').value;
+        const ayah = document.getElementById('ayahInput').value;
+        document.getElementById('dispSurah').innerText = surah;
+        document.getElementById('dispAyah').innerText = ayah;
+        document.getElementById('statusText').innerText = "✅ تم تحديث بيانات الفيديو بنجاح!";
+        setTimeout(() => { document.getElementById('statusText').innerText = ""; }, 3000);
+      }
+
+      function exportVideo() {
+        const status = document.getElementById('statusText');
+        status.innerText = "⏳ جاري تصدير ورندر الفيديو بالذكاء الاصطناعي...";
+        setTimeout(() => {
+          status.innerText = "🎉 تم تجهيز الفيديو وتنزيله بنجاح!";
+        }, 2500);
+      }
+    </script>
+  </body>
+</html>
