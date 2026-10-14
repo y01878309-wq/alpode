@@ -89,33 +89,37 @@
         color: var(--text-muted);
         margin-top: 2px;
       }
-      /* شريط الأزرار العلوية السريعة */
-      .quick-actions-bar {
+      /* شريط التنقل العلوي للـ 8 أقسام */
+      .top-nav {
         display: flex;
-        flex-wrap: wrap;
+        overflow-x: auto;
         gap: 6px;
-        padding: 12px 16px;
+        padding: 10px 14px;
         background: rgba(17, 24, 39, 0.95);
         border-bottom: 1px solid var(--border-color);
+        white-space: nowrap;
+        scrollbar-width: none;
       }
-      .quick-chip {
+      .top-nav::-webkit-scrollbar { display: none; }
+      .nav-pill {
         font-size: 11px;
         background: #1f2937;
-        color: #fff;
+        color: var(--text-muted);
         border: 1px solid var(--border-color);
         padding: 6px 10px;
         border-radius: 8px;
         cursor: pointer;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 4px;
-        text-decoration: none;
+        flex-shrink: 0;
       }
-      .quick-chip.project { background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #10b981; }
-      .quick-chip.ai { background: rgba(139, 92, 246, 0.15); border-color: #8b5cf6; color: #c4b5fd; }
-      .quick-chip.apk { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; }
-      .quick-chip.export { background: linear-gradient(135deg, var(--accent-primary), #db2777); color: #fff; border: none; }
-
+      .nav-pill.active {
+        background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+        color: #fff;
+        border-color: transparent;
+        font-weight: 700;
+      }
       .content-body {
         padding: 20px;
         display: flex;
@@ -200,6 +204,8 @@
         font-size: 12px;
         margin-bottom: 10px;
       }
+      .file-upload-btn:hover { background: #374151; }
+      
       .preview-screen {
         width: 100%;
         height: 220px;
@@ -216,6 +222,8 @@
         position: absolute;
         inset: 0;
         background: radial-gradient(circle, #1e1b4b 0%, #030712 100%);
+        background-size: cover;
+        background-position: center;
       }
       .preview-text {
         position: relative;
@@ -340,82 +348,100 @@
         <div class="subtitle">سورة مريم (٥١ - ٥٣) • تلاوة خاشعة</div>
       </header>
 
-      <!-- شريط الأزرار العلوية السريعة (المطابق للصور تماماً) -->
-      <div class="quick-actions-bar">
-        <div class="quick-chip project">📖 مشروع سورة مريم والصورة</div>
-        <div class="quick-chip ai">✨ القوالب الجاهزة</div>
-        <div class="quick-chip apk">📱 تثبيت كـ تطبيق APK</div>
-        <div class="quick-chip export">📥 تصدير وتحميل الفيديو</div>
-        <div class="quick-chip" style="background:#1f2937; color:#9ca3af;">🌐 EN</div>
+      <!-- شريط التنقل العلوي للـ 8 أقسام تماماً كما في الصور -->
+      <div class="top-nav">
+        <button class="nav-pill active" onclick="switchPage(1)">1. المشروع</button>
+        <button class="nav-pill" onclick="switchPage(2)">2. الوسائط</button>
+        <button class="nav-pill" onclick="switchPage(3)">3. التخصيص</button>
+        <button class="nav-pill" onclick="switchPage(4)">4. المعاينة</button>
+        <button class="nav-pill" onclick="switchPage(5)">5. التايم لاين</button>
+        <button class="nav-pill" onclick="switchPage(6)">6. الصوتيات</button>
+        <button class="nav-pill" onclick="switchPage(7)">7. الكاريوكي</button>
+        <button class="nav-pill" onclick="switchPage(8)">8. التصدير</button>
       </div>
 
       <div class="content-body">
         
-        <!-- 1. بطاقة مشروع سورة مريم والأزرار المباشرة -->
-        <div class="card-box">
-          <h3>✨ مشروع تلاوة سورة مريم (٥١-٥٣) جاهز للعرض والتعديل والتصدير!</h3>
-          <p>تمت كتابة آيات التلاوة بالخط القرآني مع مؤثرات الكاريوكي المتزامنة. اضغط زر التشغيل للمعاينة، أو ارفع صورتك وملف الصوت، أو اضغط تصدير لتحميل الفيديو فوراً!</p>
-          <button class="btn-action btn-orange" onclick="document.getElementById('livePreviewScreen').scrollIntoView({behavior: 'smooth'})">▶ تشغيل الفيديو</button>
-          <button class="btn-action btn-primary" onclick="alert('🎉 جاري رندر وتصدير الفيديو بالذكاء الاصطناعي وتجهيزه للتحميل!')">📥 تصدير وتحميل الفيديو</button>
-          <button class="btn-action btn-green">📱 خيارات وتثبيت الـ APK</button>
-          <button class="btn-action btn-blue">💻 سورس كود المشروع (ZIP)</button>
-          <button class="btn-action btn-secondary">📦 حزمة التطبيق الجاهزة (ZIP)</button>
-        </div>
-
-        <!-- 2. قسم الوسائط: صورتك وصوت التلاوة واسم الشيخ -->
-        <div class="card-box">
-          <h3>📁 الوسائط: صورتك وصوت التلاوة</h3>
-          <p>ارفع صورتك وملف الصوت، واكتب اسم الشيخ ليظهر فوراً على شاشة الفيديو</p>
-          
-          <label class="file-upload-btn" for="imageUpload">🖼 اختر صورة من جهازك</label>
-          <input type="file" id="imageUpload" accept="image/*" onchange="alert('✅ تم رفع الصورة بنجاح')">
-
-          <label class="file-upload-btn" for="audioUpload">🎵 اختر ملف الصوت (التلاوة)</label>
-          <input type="file" id="audioUpload" accept="audio/*" onchange="alert('✅ تم رفع ملف الصوت بنجاح')">
-
-          <div class="form-group" style="margin-top: 15px;">
-            <label><input type="checkbox" checked id="showSheikhToggle"> إظهار على الفيديو</label>
-            <label style="margin-top: 8px;">القارئ: اكتب اسم الشيخ هنا</label>
-            <input type="text" id="sheikhNameInput" value="القارئ: يوسف خربوش" oninput="document.getElementById('dispSheikhLive').innerText = this.value">
-          </div>
-
-          <label style="font-size: 11px; color: var(--text-muted);">اقتراحات سريعة:</label>
-          <div class="suggestions-grid">
-            <div class="sug-chip" onclick="setSheikh('القارئ: عبد الباسط عبد الصمد')">القارئ: عبد الباسط عبد الصمد</div>
-            <div class="sug-chip" onclick="setSheikh('القارئ: مشاري راشد العفاسي')">القارئ: مشاري راشد العفاسي</div>
-            <div class="sug-chip" onclick="setSheikh('القارئ: اسلام صبحي')">القارئ: اسلام صبحي</div>
-            <div class="sug-chip" onclick="setSheikh('القارئ: ماهر المعيقلي')">القارئ: ماهر المعيقلي</div>
-            <div class="sug-chip" onclick="setSheikh('القارئ: رعد محمد الكردي')">القارئ: رعد محمد الكردي</div>
+        <!-- القسم 1: مشروع سورة مريم والصورة والأزرار السريعة -->
+        <div class="page-section" id="page1">
+          <div class="card-box">
+            <h3>✨ مشروع تلاوة سورة مريم (٥١-٥٣) جاهز للعرض والتعديل والتصدير!</h3>
+            <p>تمت كتابة آيات التلاوة بالخط القرآني مع مؤثرات الكاريوكي المتزامنة. اضغط زر التشغيل للمعاينة، أو ارفع صورتك وملف الصوت، أو اضغط تصدير لتحميل الفيديو فوراً!</p>
+            <button class="btn-action btn-orange" onclick="switchPage(4)">▶ تشغيل الفيديو</button>
+            <button class="btn-action btn-primary" onclick="switchPage(8)">📥 تصدير وتحميل الفيديو</button>
+            <button class="btn-action btn-green">📱 خيارات وتثبيت الـ APK</button>
+            <button class="btn-action btn-blue">💻 سورس كود المشروع (ZIP)</button>
+            <button class="btn-action btn-secondary">📦 حزمة التطبيق الجاهزة (ZIP)</button>
           </div>
         </div>
 
-        <!-- 3. تخصيص اسم السورة والآيات وضبط المدة -->
-        <div class="card-box">
-          <h3>📖 تخصيص اسم السورة والآيات وضبط المدة</h3>
-          <p>اكتب اسم السورة والآيات بنفسك، أو اختر سورة لتوليدها تلقائياً، مع ضبط دقيق لزمن الفيديو (54 ثانية)</p>
-          
-          <div style="background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 12px; color: var(--accent-gold);">المدة الحالية : 54.0s</span>
-            <button class="btn-action btn-green" style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;" onclick="alert('✓ تم تثبيت مدة 54 ثانية بنجاح')">✓ تثبيت 54 ثانية بالضبط</button>
-          </div>
+        <!-- القسم 2: الوسائط (رفع حقيقي للصور وملفات الصوت واسم الشيخ) -->
+        <div class="page-section" id="page2" style="display:none;">
+          <div class="card-box">
+            <h3>🖼 الوسائط: صورتك وصوت التلاوة</h3>
+            <p>ارفع صورتك وملف الصوت، واكتب اسم الشيخ ليظهر فوراً على شاشة الفيديو</p>
+            
+            <label class="file-upload-btn" for="imageUploadInput">📁 اختر صورة من جهازك</label>
+            <input type="file" id="imageUploadInput" accept="image/*">
+            <div id="imgStatus" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 8px; text-align: center;"></div>
 
-          <div class="form-group">
-            <label>اسم السورة (اكتب ما تشاء):</label>
-            <input type="text" id="surahCustomInput" value="سُورَةُ مَرْيَمَ" oninput="updateSurahDisplay()">
-          </div>
+            <label class="file-upload-btn" for="audioUploadInput">🎵 اختر ملف الصوت (التلاوة)</label>
+            <input type="file" id="audioUploadInput" accept="audio/*">
+            <div id="audioStatus" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 12px; text-align: center;"></div>
 
-          <div class="form-group">
-            <label>أرقام الآيات:</label>
-            <input type="text" id="ayahRangeCustom" value="الآيات ٥١ - ٥٣" oninput="updateSurahDisplay()">
-          </div>
+            <div class="form-group">
+              <label><input type="checkbox" checked id="showSheikhToggle"> إظهار على الفيديو</label>
+              <input type="text" id="sheikhNameInput" value="القارئ: اكتب اسم الشيخ هنا" style="margin-top: 6px;">
+            </div>
 
-          <div class="form-group">
-            <label>تحديد مدة الفيديو الإجمالية:</label>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" value="54" style="flex: 1; text-align: center;">
-              <button class="btn-action btn-secondary" style="width: auto; margin: 0; padding: 0 15px;" onclick="alert('تم تطبيق المدة بنجاح')">تطبيق المدة</button>
+            <label style="font-size: 11px; color: var(--text-muted);">اقتراحات سريعة لأسماء القراء:</label>
+            <div class="suggestions-grid">
+              <div class="sug-chip" onclick="setSheikhVal('القارئ: عبد الباسط عبد الصمد')">عبد الباسط عبد الصمد</div>
+              <div class="sug-chip" onclick="setSheikhVal('القارئ: مشاري راشد العفاسي')">مشاري راشد العفاسي</div>
+              <div class="sug-chip" onclick="setSheikhVal('القارئ: اسلام صبحي')">اسلام صبحي</div>
+              <div class="sug-chip" onclick="setSheikhVal('القارئ: ماهر المعيقلي')">ماهر المعيقلي</div>
+              <div class="sug-chip" onclick="setSheikhVal('القارئ: رعد محمد الكردي')">رعد الكردي</div>
             </div>
           </div>
+        </div>
 
-          <label style="margin-top: 10px;">اختيار سورة سريعة:</label>
-          <div class="
+        <!-- القسم 3: تخصيص اسم السورة والآيات وضبط المدة -->
+        <div class="page-section" id="page3" style="display:none;">
+          <div class="card-box">
+            <h3>📖 تخصيص اسم السورة والآيات وضبط المدة</h3>
+            <p>اكتب اسم السورة والآيات بنفسك، أو اختر سورة لتوليدها تلقائياً، مع ضبط دقيق لزمن الفيديو (54 ثانية)</p>
+            
+            <div style="background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 12px; color: var(--accent-gold);">المدة الحالية : 54.0s</span>
+              <button class="btn-action btn-green" style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;">✓ تثبيت 54 ثانية بالضبط</button>
+            </div>
+
+            <div class="form-group">
+              <label>اسم السورة (اكتب ما تشاء):</label>
+              <input type="text" id="surahCustomInput" value="سُورَةُ مَرْيَمَ">
+            </div>
+
+            <div class="form-group">
+              <label>أرقام الآيات:</label>
+              <input type="text" id="ayahRangeCustom" value="الآيات ٥١ - ٥٣">
+            </div>
+
+            <div class="form-group">
+              <label>تحديد مدة الفيديو الإجمالية:</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" value="54" style="flex: 1; text-align: center;">
+                <button class="btn-action btn-secondary" style="width: auto; margin: 0; padding: 0 15px;" onclick="alert('تم تطبيق المدة بنجاح')">تطبيق المدة</button>
+              </div>
+            </div>
+
+            <label style="margin-top: 10px;">اختيار سورة سريعة:</label>
+            <div class="suggestions-grid">
+              <div class="sug-chip" onclick="setSurahQuick('سورة مريم')">سورة مريم</div>
+              <div class="sug-chip" onclick="setSurahQuick('سورة الكهف')">سورة الكهف</div>
+              <div class="sug-chip" onclick="setSurahQuick('سورة يوسف')">سورة يوسف</div>
+              <div class="sug-chip" onclick="setSurahQuick('سورة الرحمن')">سورة الرحمن</div>
+              <div class="sug-chip" onclick="setSurahQuick('سورة الملك')">سورة الملك</div>
+              <div class="sug-chip" onclick="setSurahQuick('سورة يس')">سورة يس</div>
+            </div>
+            
+            <button class="btn-action btn-purple" style="margin-top: 
