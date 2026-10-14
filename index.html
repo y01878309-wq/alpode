@@ -212,16 +212,18 @@
       .file-upload-btn:hover { background: #374151; }
       .preview-screen {
         width: 100%;
-        height: 220px;
+        height: 240px;
         background: #000;
         border-radius: 10px;
         position: relative;
         overflow: hidden;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         border: 1px solid var(--border-color);
-        transition: height 0.3s ease;
+        padding: 15px;
+        text-align: center;
       }
       .preview-bg {
         position: absolute;
@@ -229,37 +231,74 @@
         background: radial-gradient(circle, #1e1b4b 0%, #030712 100%);
         background-size: cover;
         background-position: center;
+        z-index: 1;
       }
-      .preview-text {
-        position: relative;
+      .preview-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
         z-index: 2;
-        text-align: center;
-        padding: 15px;
       }
-      .preview-text h4 {
-        font-size: 13px;
+      .preview-content {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .preview-header-badge {
+        font-size: 10px;
+        background: rgba(31, 41, 55, 0.8);
+        border: 1px solid var(--border-color);
         color: var(--accent-gold);
-        margin-bottom: 6px;
-      }
-      .preview-text p {
-        font-size: 13px;
-        color: #fff;
+        padding: 3px 10px;
+        border-radius: 20px;
         font-weight: 700;
-        line-height: 1.6;
+      }
+      /* تنسيق كلمات الكاريوكي المتزامنة */
+      .karaoke-box {
+        font-size: 16px;
+        font-weight: 800;
+        line-height: 1.8;
+        color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px;
+      }
+      .karaoke-word {
+        color: #fff;
+        transition: 0.2s ease;
+      }
+      .karaoke-word.active {
+        color: var(--accent-gold);
+        text-shadow: 0 0 10px rgba(245,158,11,0.8);
+        transform: scale(1.08);
+      }
+      .sub-ayah-text {
+        font-size: 11px;
+        color: var(--text-muted);
+        background: rgba(0,0,0,0.6);
+        padding: 4px 10px;
+        border-radius: 6px;
+        margin-top: 4px;
       }
       .play-btn-circle {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
         background: var(--accent-gold);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
+        font-size: 18px;
         color: #000;
         cursor: pointer;
         position: absolute;
-        bottom: 15px;
+        bottom: 10px;
         box-shadow: 0 4px 15px rgba(245,158,11,0.4);
         z-index: 5;
       }
@@ -377,7 +416,6 @@
             <button class="btn-action btn-primary" onclick="switchPage(8)">📥 تصدير وتحميل الفيديو</button>
             <button class="btn-action btn-green">📱 خيارات وتثبيت الـ APK</button>
             <button class="btn-action btn-blue">💻 سورس كود المشروع (ZIP)</button>
-            <button class="btn-action btn-secondary">📦 حزمة التطبيق الجاهزة (ZIP)</button>
           </div>
         </div>
 
@@ -415,43 +453,38 @@
         <div class="page-section" id="page3">
           <div class="card-box">
             <h3>📖 تخصيص اسم السورة والآيات وضبط المدة</h3>
-            <p>اكتب اسم السورة والآيات بنفسك، أو اختر سورة لتوليدها تلقائياً، مع ضبط دقيق لزمن الفيديو (54 ثانية)</p>
-            
-            <div style="background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 12px; color: var(--accent-gold);">المدة الحالية : 54.0s</span>
-              <button class="btn-action btn-green" style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;" type="button">✓ تثبيت 54 ثانية بالضبط</button>
-            </div>
-
             <div class="form-group">
-              <label>اسم السورة (اكتب ما تشاء):</label>
-              <input type="text" id="surahCustomInput" value="سُورَةُ مَرْيَمَ">
-            </div>
-
-            <div class="form-group">
-              <label>النص القرآني الكامل للتلاوة:</label>
+              <label>النص القرآني للكاريوكي:</label>
               <textarea id="ayahTextInput" rows="3">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا وَكَانَ رَسُولًا نَّبِيًّا</textarea>
             </div>
+            <button class="btn-action btn-secondary" onclick="updateKaraokeText()">تحديث نص الآيات</button>
           </div>
         </div>
 
-        <!-- الصفحة 4: المعاينة الحية والكاريوكي -->
+        <!-- الصفحة 4: المعاينة والكاريوكي الحقيقي -->
         <div class="page-section" id="page4">
           <div class="card-box">
             <label>أبعاد شاشة الفيديو:</label>
             <div class="options-row">
               <button class="option-btn active" id="dim916" type="button">9:16 (تيك توك)</button>
               <button class="option-btn" id="dim169" type="button">16:9 (يوتيوب)</button>
-              <button class="option-btn" id="dim11" type="button">1:1 (مربع)</button>
             </div>
 
             <div class="preview-screen" id="previewScreen">
               <div class="preview-bg" id="previewBgLayer"></div>
-              <div class="preview-text">
-                <h4 id="dispSheikhLive">القارئ: يوسف خربوش</h4>
-                <p id="dispSurah" style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">سُورَةُ مَرْيَمَ • الآيات ٥١ - ٥٣</p>
-                <!-- النص الذي سيظهر الكاريوكي عليه متزامناً -->
-                <p id="dispAyah" style="color: var(--accent-gold);">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ</p>
+              <div class="preview-overlay"></div>
+              
+              <div class="preview-content">
+                <div class="preview-header-badge" id="dispSurahHeader">سُورَةُ مَرْيَمَ • الآية ٥١</div>
+                
+                <!-- كلمات الكاريوكي المتزامنة كلمة بكلمة -->
+                <div class="karaoke-box" id="karaokeContainer">
+                  <!-- يتم توليد الكلمات هنا تلقائياً -->
+                </div>
+
+                <div class="sub-ayah-text" id="dispSheikhLive">القارئ: يوسف خربوش</div>
               </div>
+
               <div class="play-btn-circle" id="playBtn">▶</div>
             </div>
             
@@ -464,11 +497,8 @@
           <div class="card-box">
             <h3>⏱ شريط المشاهد والتايم لاين</h3>
             <div class="timeline-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="background: var(--accent-gold); color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">الآية 51</span>
-                <span style="font-size: 11px; color: var(--text-muted);">7.5s</span>
-              </div>
-              <p style="font-size: 12px; color: #fff;">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ</p>
+              <span style="background: var(--accent-gold); color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">الآية 51</span>
+              <p style="font-size: 12px; color: #fff; margin-top: 6px;">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ</p>
             </div>
           </div>
         </div>
@@ -476,13 +506,13 @@
         <!-- الصفحة 6: الصوتيات -->
         <div class="page-section" id="page6">
           <div class="card-box">
-            <h3>🎛 إعدادات الصوت والنصوص والمؤثرات</h3>
+            <h3>🎛 إعدادات الصوت</h3>
             <label>مستوى صوت التلاوة:</label>
             <input type="range" class="range-slider" min="0" max="100" value="100">
           </div>
         </div>
 
-        <!-- الصفحة 7: الكاريوكي والألوان -->
+        <!-- الصفحة 7: الكاريوكي -->
         <div class="page-section" id="page7">
           <div class="card-box">
             <label>لون تمييز الكلمات (كاريوكي):</label>
@@ -490,7 +520,6 @@
               <div class="color-dot selected" data-color="#f59e0b" style="background: #f59e0b;"></div>
               <div class="color-dot" data-color="#ec4899" style="background: #ec4899;"></div>
               <div class="color-dot" data-color="#10b981" style="background: #10b981;"></div>
-              <div class="color-dot" data-color="#3b82f6" style="background: #3b82f6;"></div>
               <div class="color-dot" data-color="#ffffff" style="background: #ffffff;"></div>
             </div>
           </div>
@@ -564,37 +593,57 @@
         });
       }
 
-      // نصوص الآيات المتتابعة للكاريوكي
-      const ayahsList = [
-        "وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ",
-        "إِنَّهُ كَانَ مُخْلِصًا",
-        "وَكَانَ رَسُولًا نَّبِيًّا",
-        "وَنَادَيْنَاهُ مِنْ جَانِبِ الطُّورِ الأَيْمَنِ"
-      ];
-      let ayahIndex = 0;
-      let karaokeInterval = null;
+      // إعداد الكاريوكي كلمة بكلمة
+      const karaokeContainer = document.getElementById('karaokeContainer');
+      let currentWordIndex = 0;
+      let karaokeTimer = null;
+      let wordsElements = [];
 
-      // زر التشغيل والإيقاف (يشغل الصوت والكاريوكي معاً بانسجام)
+      function initKaraoke() {
+        const text = document.getElementById('ayahTextInput').value.trim();
+        const words = text.split(/\s+/);
+        karaokeContainer.innerHTML = '';
+        wordsElements = [];
+
+        words.forEach(word => {
+          const span = document.createElement('span');
+          span.className = 'karaoke-word';
+          span.innerText = word;
+          karaokeContainer.appendChild(span);
+          wordsElements.push(span);
+        });
+        currentWordIndex = 0;
+      }
+      initKaraoke();
+
+      function updateKaraokeText() {
+        initKaraoke();
+        alert("✅ تم تحديث نص الكاريوكي بنجاح!");
+      }
+
+      // زر التشغيل والإيقاف المتزامن مع الصوت والكاريوكي
       let isPlaying = false;
       const playBtn = document.getElementById('playBtn');
       if(playBtn) {
         playBtn.addEventListener('click', function() {
           isPlaying = !isPlaying;
           const status = document.getElementById('statusText');
-          const dispAyah = document.getElementById('dispAyah');
 
           if(isPlaying) {
             this.innerText = "⏸";
             if(audioPlayerElement.src) {
               audioPlayerElement.play().catch(e => console.log(e));
             }
-            if(status) status.innerText = "▶ جاري تشغيل التلاوة والكاريوكي المتزامن...";
-            
-            // تشغيل حركة الكاريوكي وتغيير الآيات تباعاً
-            karaokeInterval = setInterval(() => {
-              ayahIndex = (ayahIndex + 1) % ayahsList.length;
-              if(dispAyah) dispAyah.innerText = ayahsList[ayahIndex];
-            }, 3000);
+            if(status) status.innerText = "▶ جاري تلاوة الكاريوكي المتزامن...";
+
+            // تلوين الكلمات تباعاً كلمة بكلمة مع نطق الصوت
+            karaokeTimer = setInterval(() => {
+              if(wordsElements.length > 0) {
+                wordsElements.forEach(el => el.classList.remove('active'));
+                wordsElements[currentWordIndex].classList.add('active');
+                currentWordIndex = (currentWordIndex + 1) % wordsElements.length;
+              }
+            }, 600); // سرعة تتابع الكلمات
 
           } else {
             this.innerText = "▶";
@@ -602,29 +651,8 @@
               audioPlayerElement.pause();
             }
             if(status) status.innerText = "⏸ تم الإيقاف المؤقت";
-            clearInterval(karaokeInterval);
+            clearInterval(karaokeTimer);
           }
-        });
-      }
-
-      // أزرار الأبعاد
-      const screen = document.getElementById('previewScreen');
-      const btn916 = document.getElementById('dim916');
-      const btn169 = document.getElementById('dim169');
-      const btn11 = document.getElementById('dim11');
-
-      if(btn916 && btn169 && btn11 && screen) {
-        btn916.addEventListener('click', function() {
-          btn916.classList.add('active'); btn169.classList.remove('active'); btn11.classList.remove('active');
-          screen.style.height = '240px';
-        });
-        btn169.addEventListener('click', function() {
-          btn169.classList.add('active'); btn916.classList.remove('active'); btn11.classList.remove('active');
-          screen.style.height = '150px';
-        });
-        btn11.addEventListener('click', function() {
-          btn11.classList.add('active'); btn916.classList.remove('active'); btn169.classList.remove('active');
-          screen.style.height = '200px';
         });
       }
 
@@ -635,10 +663,24 @@
           dots.forEach(d => d.classList.remove('selected'));
           this.classList.add('selected');
           const color = this.getAttribute('data-color');
-          const dispAyah = document.getElementById('dispAyah');
-          if(dispAyah) dispAyah.style.color = color;
+          document.documentElement.style.setProperty('--accent-gold', color);
         });
       });
+
+      // أبعاد الشاشة
+      const screen = document.getElementById('previewScreen');
+      const btn916 = document.getElementById('dim916');
+      const btn169 = document.getElementById('dim169');
+      if(btn916 && btn169 && screen) {
+        btn916.addEventListener('click', function() {
+          btn916.classList.add('active'); btn169.classList.remove('active');
+          screen.style.height = '240px';
+        });
+        btn169.addEventListener('click', function() {
+          btn169.classList.add('active'); btn916.classList.remove('active');
+          screen.style.height = '150px';
+        });
+      }
 
       // زر التصدير
       const exportBtn = document.getElementById('exportBtn');
