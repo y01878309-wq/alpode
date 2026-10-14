@@ -89,12 +89,13 @@
         color: var(--text-muted);
         margin-top: 2px;
       }
+      /* شريط التبويبات العلوي */
       .top-nav {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         gap: 6px;
-        padding: 12px 16px;
-        background: rgba(17, 24, 39, 0.9);
+        padding: 12px;
+        background: rgba(17, 24, 39, 0.95);
         border-bottom: 1px solid var(--border-color);
       }
       .nav-pill {
@@ -102,24 +103,34 @@
         background: #1f2937;
         color: var(--text-muted);
         border: 1px solid var(--border-color);
-        padding: 6px 10px;
+        padding: 8px 4px;
         border-radius: 8px;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 4px;
+        text-align: center;
+        font-family: 'Cairo', sans-serif;
+        font-weight: 600;
+        transition: 0.2s;
       }
       .nav-pill.active {
         background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
         color: #fff;
         border-color: transparent;
         font-weight: 700;
+        box-shadow: 0 2px 8px rgba(139,92,246,0.4);
       }
       .content-body {
         padding: 20px;
         display: flex;
         flex-direction: column;
         gap: 20px;
+      }
+      .page-section {
+        display: none;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .page-section.active-page {
+        display: flex;
       }
       .card-box {
         background: rgba(31, 41, 55, 0.5);
@@ -185,7 +196,6 @@
         font-family: 'Cairo', sans-serif;
         font-size: 13px;
       }
-      input[type="file"] { display: none; }
       .file-upload-btn {
         display: block;
         width: 100%;
@@ -198,6 +208,9 @@
         cursor: pointer;
         font-size: 12px;
         margin-bottom: 10px;
+      }
+      .file-upload-btn:hover {
+        background: #374151;
       }
       .preview-screen {
         width: 100%;
@@ -216,6 +229,8 @@
         position: absolute;
         inset: 0;
         background: radial-gradient(circle, #1e1b4b 0%, #030712 100%);
+        background-size: cover;
+        background-position: center;
       }
       .preview-text {
         position: relative;
@@ -340,7 +355,7 @@
         <div class="subtitle">سورة مريم (٥١ - ٥٣) • تلاوة خاشعة</div>
       </header>
 
-      <!-- شريط التنقل العلوي السريع بين الأقسام الـ 8 -->
+      <!-- شريط التنقل العلوي -->
       <div class="top-nav">
         <button class="nav-pill active" onclick="switchPage(1)">1. المشروع</button>
         <button class="nav-pill" onclick="switchPage(2)">2. الوسائط</button>
@@ -354,8 +369,8 @@
 
       <div class="content-body">
         
-        <!-- الصفحة 1: المشروع الرئيسي والأزرار السريعة -->
-        <div class="page-section" id="page1">
+        <!-- الصفحة 1: المشروع الرئيسي -->
+        <div class="page-section active-page" id="page1">
           <div class="card-box">
             <h3>✨ مشروع تلاوة سورة مريم (٥١-٥٣) جاهز للعرض والتعديل والتصدير!</h3>
             <p>تمت كتابة آيات التلاوة بالخط القرآني مع مؤثرات الكاريوكي المتزامنة. اضغط زر التشغيل للمعاينة، أو ارفع صورتك وملف الصوت، أو اضغط تصدير لتحميل الفيديو فوراً!</p>
@@ -367,21 +382,25 @@
           </div>
         </div>
 
-        <!-- الصفحة 2: الوسائط (رفع الصور وملفات الصوت واسم الشيخ) -->
-        <div class="page-section" id="page2" style="display:none;">
+        <!-- الصفحة 2: الوسائط (رفع الصور والصوت الفعلي) -->
+        <div class="page-section" id="page2">
           <div class="card-box">
             <h3>🖼 الوسائط: صورتك وصوت التلاوة</h3>
             <p>ارفع صورتك وملف الصوت، واكتب اسم الشيخ ليظهر فوراً على شاشة الفيديو</p>
             
-            <label class="file-upload-btn" for="imageUpload">📁 اختر صورة من جهازك</label>
-            <input type="file" id="imageUpload" accept="image/*">
+            <!-- زر اختيار صورة حقيقي مرتبط بـ JavaScript -->
+            <label class="file-upload-btn" for="imageUploadInput">📁 اختر صورة من جهازك</label>
+            <input type="file" id="imageUploadInput" accept="image/*" style="display:none;">
+            <div id="imageNameDisplay" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; text-align: center;"></div>
 
-            <label class="file-upload-btn" for="audioUpload">🎵 اختر ملف الصوت (التلاوة)</label>
-            <input type="file" id="audioUpload" accept="audio/*">
+            <!-- زر اختيار صوت حقيقي مرتبط بـ JavaScript -->
+            <label class="file-upload-btn" for="audioUploadInput">🎵 اختر ملف الصوت (التلاوة)</label>
+            <input type="file" id="audioUploadInput" accept="audio/*" style="display:none;">
+            <div id="audioNameDisplay" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; text-align: center;"></div>
 
             <div class="form-group" style="margin-top: 15px;">
               <label><input type="checkbox" checked id="showSheikhToggle"> إظهار على الفيديو</label>
-              <input type="text" id="sheikhNameInput" value="القارئ: اكتب اسم الشيخ هنا" style="margin-top: 6px;">
+              <input type="text" id="sheikhNameInput" value="القارئ: يوسف خربوش" style="margin-top: 6px;">
             </div>
 
             <label style="font-size: 11px; color: var(--text-muted);">اقتراحات سريعة للقرّاء:</label>
@@ -395,8 +414,8 @@
           </div>
         </div>
 
-        <!-- الصفحة 3: تخصيص اسم السورة والآيات وضبط المدة -->
-        <div class="page-section" id="page3" style="display:none;">
+        <!-- الصفحة 3: التخصيص وضبط المدة -->
+        <div class="page-section" id="page3">
           <div class="card-box">
             <h3>📖 تخصيص اسم السورة والآيات وضبط المدة</h3>
             <p>اكتب اسم السورة والآيات بنفسك، أو اختر سورة لتوليدها تلقائياً، مع ضبط دقيق لزمن الفيديو (54 ثانية)</p>
@@ -416,30 +435,18 @@
               <input type="text" id="ayahRangeCustom" value="الآيات ٥١ - ٥٣">
             </div>
 
-            <div class="form-group">
-              <label>تحديد مدة الفيديو الإجمالية:</label>
-              <div style="display: flex; gap: 8px;">
-                <input type="text" value="54" style="flex: 1; text-align: center;">
-                <button class="btn-action btn-secondary" style="width: auto; margin: 0; padding: 0 15px;" type="button">تطبيق المدة</button>
-              </div>
-            </div>
-
             <label style="margin-top: 10px;">اختيار سورة سريعة:</label>
             <div class="suggestions-grid">
               <div class="sug-chip" onclick="setSurahQuick('سورة مريم')">سورة مريم</div>
               <div class="sug-chip" onclick="setSurahQuick('سورة الكهف')">سورة الكهف</div>
               <div class="sug-chip" onclick="setSurahQuick('سورة يوسف')">سورة يوسف</div>
               <div class="sug-chip" onclick="setSurahQuick('سورة الرحمن')">سورة الرحمن</div>
-              <div class="sug-chip" onclick="setSurahQuick('سورة الملك')">سورة الملك</div>
-              <div class="sug-chip" onclick="setSurahQuick('سورة يس')">سورة يس</div>
             </div>
-            
-            <button class="btn-action btn-purple" style="margin-top: 15px;" type="button">✨ كتابة آيات هذه السورة تلقائياً بالذكاء الاصطناعي</button>
           </div>
         </div>
 
-        <!-- الصفحة 4: المعاينة الحية والأبعاد والتشغيل -->
-        <div class="page-section" id="page4" style="display:none;">
+        <!-- الصفحة 4: المعاينة والأبعاد -->
+        <div class="page-section" id="page4">
           <div class="card-box">
             <label>أبعاد شاشة الفيديو:</label>
             <div class="options-row">
@@ -449,7 +456,7 @@
             </div>
 
             <div class="preview-screen" id="previewScreen">
-              <div class="preview-bg"></div>
+              <div class="preview-bg" id="previewBgLayer"></div>
               <div class="preview-text">
                 <h4 id="dispSheikhLive">القارئ: يوسف خربوش</h4>
                 <p id="dispSurah" style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">سُورَةُ مَرْيَمَ • الآيات ٥١ - ٥٣</p>
@@ -458,84 +465,37 @@
               <div class="play-btn-circle" id="playBtn">▶</div>
             </div>
             
-            <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
-              <span>00:54</span>
-              <input type="range" class="range-slider" style="flex: 1; margin: 0 10px;" value="0">
-              <span>00:00</span>
-            </div>
-            
-            <div style="display: flex; gap: 8px; margin-top: 8px;">
-              <button class="option-btn" style="flex:1;" type="button">🔄 إعادة</button>
-              <button class="option-btn active" style="flex:2;" type="button">⚡ سرعة الكلمات: فوري</button>
-            </div>
-
             <div id="statusText" class="status-msg"></div>
           </div>
         </div>
 
-        <!-- الصفحة 5: شريط المشاهد والتايم لاين -->
-        <div class="page-section" id="page5" style="display:none;">
+        <!-- الصفحة 5: التايم لاين والمشاهد -->
+        <div class="page-section" id="page5">
           <div class="card-box">
             <h3>⏱ شريط المشاهد والتايم لاين (4 مشاهد)</h3>
             <button class="btn-action btn-secondary" style="margin-bottom: 10px;" type="button">+ إضافة مشهد جديد</button>
-            
             <div class="timeline-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span style="background: var(--accent-gold); color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">الآية 51</span>
                 <span style="font-size: 11px; color: var(--text-muted);">7.5s</span>
               </div>
               <p style="font-size: 12px; color: #fff;">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ</p>
-              <div style="display: flex; gap: 10px; margin-top: 8px; font-size: 14px; cursor: pointer;">
-                <span>🗑️</span><span>📋</span><span>✏️</span>
-              </div>
-            </div>
-
-            <div class="timeline-card" style="border-color: var(--border-color);">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="background: #374151; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px;">مشهد 2</span>
-                <span style="font-size: 11px; color: var(--text-muted);">15.5s</span>
-              </div>
-              <p style="font-size: 12px; color: var(--text-muted);">إِنَّهُ كَانَ مُخْلِصًا وَكَانَ...</p>
             </div>
           </div>
         </div>
 
-        <!-- الصفحة 6: إعدادات الصوت والموسيقى والموجات والكابشن -->
-        <div class="page-section" id="page6" style="display:none;">
+        <!-- الصفحة 6: إعدادات الصوت -->
+        <div class="page-section" id="page6">
           <div class="card-box">
             <h3>🎛 إعدادات الصوت والنصوص والمؤثرات</h3>
-            
-            <div class="form-group">
-              <label>الموسيقى الخلفية:</label>
-              <select>
-                <option>بدون موسيقى (صوت التلاوة فقط)</option>
-                <option>نغمات هادئة وخاشعة</option>
-                <option>مؤثرات طبيعية</option>
-              </select>
-            </div>
-
-            <label>مستوى صوت الموسيقى (0%):</label>
-            <input type="range" class="range-slider" min="0" max="100" value="0">
-
-            <label style="margin-top: 10px;">مستوى صوت التلاوة / التعليق (100%):</label>
+            <label>مستوى صوت التلاوة / التعليق:</label>
             <input type="range" class="range-slider" min="0" max="100" value="100">
-
-            <div class="form-group" style="margin-top: 15px;">
-              <label><input type="checkbox" checked> إظهار موجات الصوت المتحركة</label>
-              <label style="margin-top: 8px;"><input type="checkbox" checked> نصوص الكابشن والترجمة التلقائية</label>
-            </div>
-
-            <label>موضع الكابشن والترجمة على الشاشة:</label>
-            <div class="options-row">
-              <button class="option-btn" type="button">أعلى الشاشة</button>
-              <button class="option-btn" type="button">وسط الشاشة</button>
-              <button class="option-btn active" type="button">أسفل الشاشة</button>
-            </div>
+            <label style="margin-top: 10px;"><input type="checkbox" checked> نصوص الكابشن والترجمة التلقائية</label>
           </div>
         </div>
 
-        <!-- الصفحة 7: ألوان الكاريوكي، السرعة وتزامن الكلمات -->
-        <div class="page-section" id="page7" style="display:none;">
+        <!-- الصفحة 7: الكاريوكي -->
+        <div class="page-section" id="page7">
           <div class="card-box">
             <label>لون تمييز الكلمات (كاريوكي):</label>
             <div class="color-palette" id="colorPalette">
@@ -545,43 +505,14 @@
               <div class="color-dot" data-color="#3b82f6" style="background: #3b82f6;"></div>
               <div class="color-dot" data-color="#ffffff" style="background: #ffffff;"></div>
             </div>
-
-            <div style="margin-top: 15px;">
-              <label>سرعة وتزامن الكلمات مع الصوت (بدون تأخير): 1.40x (140%)</label>
-              <input type="range" class="range-slider" min="50" max="200" value="140">
-            </div>
-
-            <div style="margin-top: 10px;">
-              <label>تقديم زمن الكلمة (بدون تأخير): 0.95s+</label>
-              <input type="range" class="range-slider" min="0" max="2" step="0.05" value="0.95">
-            </div>
-
-            <div class="options-row" style="margin-top: 12px;">
-              <button class="option-btn active" style="font-size: 11px;" type="button">⚡ فوري بدون تأخير (موصى به)</button>
-              <button class="option-btn" style="font-size: 11px;" type="button">🎯 مطابق دقيق</button>
-            </div>
-
-            <div class="form-group" style="margin-top: 10px;">
-              <label><input type="checkbox" checked> إضاءة الكلمة الحالية بالذهاب على الآية مباشرة</label>
-            </div>
           </div>
         </div>
 
-        <!-- الصفحة 8: التوقيع، العلامة المائية والتصدير النهائي -->
-        <div class="page-section" id="page8" style="display:none;">
+        <!-- الصفحة 8: التصدير -->
+        <div class="page-section" id="page8">
           <div class="card-box">
-            <h3>🛡 العلامة المائية / التوقيع</h3>
-            <div class="form-group" style="margin-bottom: 10px;">
-              <label><input type="checkbox" checked> إظهار اسم السورة في التوقيع</label>
-              <input type="text" value="سُورَةُ مَرْيَمَ • الآيات ٥١ - ٥٣" style="margin-top: 6px;">
-            </div>
-
-            <div class="form-group">
-              <label><input type="checkbox" checked> إظهار اسم الشيخ / القارئ</label>
-              <input type="text" id="reciterInput" value="القارئ: يوسف خربوش" style="margin-top: 6px;">
-            </div>
-
-            <button class="btn-action btn-primary" id="exportBtn" style="margin-top: 20px;" type="button">📥 ابدأ التصدير النهائي الآن</button>
+            <h3>🛡 التصدير النهائي</h3>
+            <button class="btn-action btn-primary" id="exportBtn" style="margin-top: 10px;" type="button">📥 ابدأ التصدير النهائي الآن</button>
             <div id="statusTextExport" class="status-msg"></div>
           </div>
         </div>
@@ -589,11 +520,15 @@
       </div>
     </div>
 
+    <!-- عنصر صوتي وهمي لتشغيل الصوت المرفوع -->
+    <audio id="audioPlayerElement" style="display:none;"></audio>
+
     <script>
-      // التنقل بين الـ 8 صفحات
+      // نظام تبديل الصفحات
       function switchPage(pageNum) {
-        document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
-        document.getElementById('page' + pageNum).style.display = 'block';
+        document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
+        const targetPage = document.getElementById('page' + pageNum);
+        if(targetPage) targetPage.classList.add('active-page');
 
         document.querySelectorAll('.nav-pill').forEach(pill => pill.classList.remove('active'));
         const pills = document.querySelectorAll('.nav-pill');
@@ -601,16 +536,55 @@
       }
 
       function setSheikhVal(name) {
-        document.getElementById('sheikhNameInput').value = name;
-        document.getElementById('dispSheikhLive').innerText = name;
+        const sheikhInput = document.getElementById('sheikhNameInput');
+        const dispSheikh = document.getElementById('dispSheikhLive');
+        if(sheikhInput) sheikhInput.value = name;
+        if(dispSheikh) dispSheikh.innerText = name;
       }
 
       function setSurahQuick(name) {
-        document.getElementById('surahCustomInput').value = name;
-        document.getElementById('dispSurah').innerText = name + " • الآيات ٥١ - ٥٣";
+        const surahInput = document.getElementById('surahCustomInput');
+        const dispSurah = document.getElementById('dispSurah');
+        if(surahInput) surahInput.value = name;
+        if(dispSurah) dispSurah.innerText = name + " • الآيات ٥١ - ٥٣";
       }
 
-      // زر التشغيل والإيقاف في المعاينة
+      // البرمجة الحقيقية لرفع الصورة وعرضها في المعاينة
+      const imageUploadInput = document.getElementById('imageUploadInput');
+      const imageNameDisplay = document.getElementById('imageNameDisplay');
+      const previewBgLayer = document.getElementById('previewBgLayer');
+
+      if(imageUploadInput) {
+        imageUploadInput.addEventListener('change', function(event) {
+          const file = event.target.files[0];
+          if(file) {
+            imageNameDisplay.innerText = "✅ تم اختيار الصورة: " + file.name;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              previewBgLayer.style.backgroundImage = `url('${e.target.result}')`;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      // البرمجة الحقيقية لرفع ملف الصوت
+      const audioUploadInput = document.getElementById('audioUploadInput');
+      const audioNameDisplay = document.getElementById('audioNameDisplay');
+      const audioPlayerElement = document.getElementById('audioPlayerElement');
+
+      if(audioUploadInput) {
+        audioUploadInput.addEventListener('change', function(event) {
+          const file = event.target.files[0];
+          if(file) {
+            audioNameDisplay.innerText = "✅ تم اختيار الصوت: " + file.name;
+            const audioUrl = URL.createObjectURL(file);
+            audioPlayerElement.src = audioUrl;
+          }
+        });
+      }
+
+      // زر التشغيل والإيقاف (يشغل الصوت المرفوع حقيقة إذا وجد)
       let isPlaying = false;
       const playBtn = document.getElementById('playBtn');
       if(playBtn) {
@@ -619,15 +593,21 @@
           const status = document.getElementById('statusText');
           if(isPlaying) {
             this.innerText = "⏸";
-            if(status) status.innerText = "▶ جاري تشغيل التلاوة مع الكاريوكي والمؤثرات...";
+            if(audioPlayerElement.src) {
+              audioPlayerElement.play().catch(e => console.log(e));
+            }
+            if(status) status.innerText = "▶ جاري تشغيل التلاوة والمؤثرات...";
           } else {
             this.innerText = "▶";
+            if(audioPlayerElement.src) {
+              audioPlayerElement.pause();
+            }
             if(status) status.innerText = "⏸ تم الإيقاف المؤقت";
           }
         });
       }
 
-      // زر التصدير النهائي
+      // زر التصدير
       const exportBtn = document.getElementById('exportBtn');
       if(exportBtn) {
         exportBtn.addEventListener('click', function() {
@@ -647,23 +627,15 @@
 
       if(btn916 && btn169 && btn11 && screen) {
         btn916.addEventListener('click', function() {
-          btn916.classList.add('active');
-          btn169.classList.remove('active');
-          btn11.classList.remove('active');
+          btn916.classList.add('active'); btn169.classList.remove('active'); btn11.classList.remove('active');
           screen.style.height = '240px';
         });
-
         btn169.addEventListener('click', function() {
-          btn169.classList.add('active');
-          btn916.classList.remove('active');
-          btn11.classList.remove('active');
+          btn169.classList.add('active'); btn916.classList.remove('active'); btn11.classList.remove('active');
           screen.style.height = '150px';
         });
-
         btn11.addEventListener('click', function() {
-          btn11.classList.add('active');
-          btn916.classList.remove('active');
-          btn169.classList.remove('active');
+          btn11.classList.add('active'); btn916.classList.remove('active'); btn169.classList.remove('active');
           screen.style.height = '200px';
         });
       }
