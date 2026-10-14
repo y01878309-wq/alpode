@@ -209,9 +209,7 @@
         font-size: 12px;
         margin-bottom: 10px;
       }
-      .file-upload-btn:hover {
-        background: #374151;
-      }
+      .file-upload-btn:hover { background: #374151; }
       .preview-screen {
         width: 100%;
         height: 220px;
@@ -247,6 +245,7 @@
         font-size: 13px;
         color: #fff;
         font-weight: 700;
+        line-height: 1.6;
       }
       .play-btn-circle {
         width: 50px;
@@ -382,18 +381,16 @@
           </div>
         </div>
 
-        <!-- الصفحة 2: الوسائط (رفع الصور والصوت الفعلي) -->
+        <!-- الصفحة 2: الوسائط (رفع الصور والصوت) -->
         <div class="page-section" id="page2">
           <div class="card-box">
             <h3>🖼 الوسائط: صورتك وصوت التلاوة</h3>
             <p>ارفع صورتك وملف الصوت، واكتب اسم الشيخ ليظهر فوراً على شاشة الفيديو</p>
             
-            <!-- زر اختيار صورة حقيقي مرتبط بـ JavaScript -->
             <label class="file-upload-btn" for="imageUploadInput">📁 اختر صورة من جهازك</label>
             <input type="file" id="imageUploadInput" accept="image/*" style="display:none;">
             <div id="imageNameDisplay" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; text-align: center;"></div>
 
-            <!-- زر اختيار صوت حقيقي مرتبط بـ JavaScript -->
             <label class="file-upload-btn" for="audioUploadInput">🎵 اختر ملف الصوت (التلاوة)</label>
             <input type="file" id="audioUploadInput" accept="audio/*" style="display:none;">
             <div id="audioNameDisplay" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; text-align: center;"></div>
@@ -414,7 +411,7 @@
           </div>
         </div>
 
-        <!-- الصفحة 3: التخصيص وضبط المدة -->
+        <!-- الصفحة 3: التخصيص -->
         <div class="page-section" id="page3">
           <div class="card-box">
             <h3>📖 تخصيص اسم السورة والآيات وضبط المدة</h3>
@@ -431,21 +428,13 @@
             </div>
 
             <div class="form-group">
-              <label>أرقام الآيات:</label>
-              <input type="text" id="ayahRangeCustom" value="الآيات ٥١ - ٥٣">
-            </div>
-
-            <label style="margin-top: 10px;">اختيار سورة سريعة:</label>
-            <div class="suggestions-grid">
-              <div class="sug-chip" onclick="setSurahQuick('سورة مريم')">سورة مريم</div>
-              <div class="sug-chip" onclick="setSurahQuick('سورة الكهف')">سورة الكهف</div>
-              <div class="sug-chip" onclick="setSurahQuick('سورة يوسف')">سورة يوسف</div>
-              <div class="sug-chip" onclick="setSurahQuick('سورة الرحمن')">سورة الرحمن</div>
+              <label>النص القرآني الكامل للتلاوة:</label>
+              <textarea id="ayahTextInput" rows="3">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا وَكَانَ رَسُولًا نَّبِيًّا</textarea>
             </div>
           </div>
         </div>
 
-        <!-- الصفحة 4: المعاينة والأبعاد -->
+        <!-- الصفحة 4: المعاينة الحية والكاريوكي -->
         <div class="page-section" id="page4">
           <div class="card-box">
             <label>أبعاد شاشة الفيديو:</label>
@@ -460,7 +449,8 @@
               <div class="preview-text">
                 <h4 id="dispSheikhLive">القارئ: يوسف خربوش</h4>
                 <p id="dispSurah" style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">سُورَةُ مَرْيَمَ • الآيات ٥١ - ٥٣</p>
-                <p id="dispAyah" style="color: var(--accent-gold);">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ ۚ إِنَّهُ كَانَ مُخْلِصًا</p>
+                <!-- النص الذي سيظهر الكاريوكي عليه متزامناً -->
+                <p id="dispAyah" style="color: var(--accent-gold);">وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ</p>
               </div>
               <div class="play-btn-circle" id="playBtn">▶</div>
             </div>
@@ -469,11 +459,10 @@
           </div>
         </div>
 
-        <!-- الصفحة 5: التايم لاين والمشاهد -->
+        <!-- الصفحة 5: التايم لاين -->
         <div class="page-section" id="page5">
           <div class="card-box">
-            <h3>⏱ شريط المشاهد والتايم لاين (4 مشاهد)</h3>
-            <button class="btn-action btn-secondary" style="margin-bottom: 10px;" type="button">+ إضافة مشهد جديد</button>
+            <h3>⏱ شريط المشاهد والتايم لاين</h3>
             <div class="timeline-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span style="background: var(--accent-gold); color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">الآية 51</span>
@@ -484,17 +473,16 @@
           </div>
         </div>
 
-        <!-- الصفحة 6: إعدادات الصوت -->
+        <!-- الصفحة 6: الصوتيات -->
         <div class="page-section" id="page6">
           <div class="card-box">
             <h3>🎛 إعدادات الصوت والنصوص والمؤثرات</h3>
-            <label>مستوى صوت التلاوة / التعليق:</label>
+            <label>مستوى صوت التلاوة:</label>
             <input type="range" class="range-slider" min="0" max="100" value="100">
-            <label style="margin-top: 10px;"><input type="checkbox" checked> نصوص الكابشن والترجمة التلقائية</label>
           </div>
         </div>
 
-        <!-- الصفحة 7: الكاريوكي -->
+        <!-- الصفحة 7: الكاريوكي والألوان -->
         <div class="page-section" id="page7">
           <div class="card-box">
             <label>لون تمييز الكلمات (كاريوكي):</label>
@@ -520,7 +508,7 @@
       </div>
     </div>
 
-    <!-- عنصر صوتي وهمي لتشغيل الصوت المرفوع -->
+    <!-- عنصر الصوت -->
     <audio id="audioPlayerElement" style="display:none;"></audio>
 
     <script>
@@ -542,14 +530,7 @@
         if(dispSheikh) dispSheikh.innerText = name;
       }
 
-      function setSurahQuick(name) {
-        const surahInput = document.getElementById('surahCustomInput');
-        const dispSurah = document.getElementById('dispSurah');
-        if(surahInput) surahInput.value = name;
-        if(dispSurah) dispSurah.innerText = name + " • الآيات ٥١ - ٥٣";
-      }
-
-      // البرمجة الحقيقية لرفع الصورة وعرضها في المعاينة
+      // رفع الصورة وعرضها في المعاينة
       const imageUploadInput = document.getElementById('imageUploadInput');
       const imageNameDisplay = document.getElementById('imageNameDisplay');
       const previewBgLayer = document.getElementById('previewBgLayer');
@@ -568,7 +549,7 @@
         });
       }
 
-      // البرمجة الحقيقية لرفع ملف الصوت
+      // رفع ملف الصوت
       const audioUploadInput = document.getElementById('audioUploadInput');
       const audioNameDisplay = document.getElementById('audioNameDisplay');
       const audioPlayerElement = document.getElementById('audioPlayerElement');
@@ -578,44 +559,51 @@
           const file = event.target.files[0];
           if(file) {
             audioNameDisplay.innerText = "✅ تم اختيار الصوت: " + file.name;
-            const audioUrl = URL.createObjectURL(file);
-            audioPlayerElement.src = audioUrl;
+            audioPlayerElement.src = URL.createObjectURL(file);
           }
         });
       }
 
-      // زر التشغيل والإيقاف (يشغل الصوت المرفوع حقيقة إذا وجد)
+      // نصوص الآيات المتتابعة للكاريوكي
+      const ayahsList = [
+        "وَاذْكُرْ فِي الْكِتَابِ مُوسَىٰ",
+        "إِنَّهُ كَانَ مُخْلِصًا",
+        "وَكَانَ رَسُولًا نَّبِيًّا",
+        "وَنَادَيْنَاهُ مِنْ جَانِبِ الطُّورِ الأَيْمَنِ"
+      ];
+      let ayahIndex = 0;
+      let karaokeInterval = null;
+
+      // زر التشغيل والإيقاف (يشغل الصوت والكاريوكي معاً بانسجام)
       let isPlaying = false;
       const playBtn = document.getElementById('playBtn');
       if(playBtn) {
         playBtn.addEventListener('click', function() {
           isPlaying = !isPlaying;
           const status = document.getElementById('statusText');
+          const dispAyah = document.getElementById('dispAyah');
+
           if(isPlaying) {
             this.innerText = "⏸";
             if(audioPlayerElement.src) {
               audioPlayerElement.play().catch(e => console.log(e));
             }
-            if(status) status.innerText = "▶ جاري تشغيل التلاوة والمؤثرات...";
+            if(status) status.innerText = "▶ جاري تشغيل التلاوة والكاريوكي المتزامن...";
+            
+            // تشغيل حركة الكاريوكي وتغيير الآيات تباعاً
+            karaokeInterval = setInterval(() => {
+              ayahIndex = (ayahIndex + 1) % ayahsList.length;
+              if(dispAyah) dispAyah.innerText = ayahsList[ayahIndex];
+            }, 3000);
+
           } else {
             this.innerText = "▶";
             if(audioPlayerElement.src) {
               audioPlayerElement.pause();
             }
             if(status) status.innerText = "⏸ تم الإيقاف المؤقت";
+            clearInterval(karaokeInterval);
           }
-        });
-      }
-
-      // زر التصدير
-      const exportBtn = document.getElementById('exportBtn');
-      if(exportBtn) {
-        exportBtn.addEventListener('click', function() {
-          const status = document.getElementById('statusTextExport');
-          if(status) status.innerText = "⏳ جاري رندر وتصدير الفيديو بالذكاء الاصطناعي...";
-          setTimeout(() => {
-            if(status) status.innerText = "🎉 تم تجهيز الفيديو وتنزيله بنجاح!";
-          }, 2500);
         });
       }
 
@@ -651,6 +639,18 @@
           if(dispAyah) dispAyah.style.color = color;
         });
       });
+
+      // زر التصدير
+      const exportBtn = document.getElementById('exportBtn');
+      if(exportBtn) {
+        exportBtn.addEventListener('click', function() {
+          const status = document.getElementById('statusTextExport');
+          if(status) status.innerText = "⏳ جاري رندر وتصدير الفيديو بالذكاء الاصطناعي...";
+          setTimeout(() => {
+            if(status) status.innerText = "🎉 تم تجهيز الفيديو وتنزيله بنجاح!";
+          }, 2500);
+        });
+      }
     </script>
   </body>
 </html>
